@@ -17,6 +17,8 @@ import java.util.Locale;
 @SuppressWarnings("java:S3010")
 public class Translator {
 
+    public static final Locale DEFAULT_LOCALE = new Locale("tr");
+
     private static ResourceBundleMessageSource messageSource;
 
     @Autowired
@@ -47,6 +49,6 @@ public class Translator {
     }
 
     public static String getDefaultLanguageUpper() {
-        return Locale.getDefault().getLanguage().toUpperCase(Locale.UK);
+        return DEFAULT_LOCALE.getLanguage().toUpperCase(Locale.UK);
     }
 }

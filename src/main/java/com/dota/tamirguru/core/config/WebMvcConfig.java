@@ -7,6 +7,7 @@
 package com.dota.tamirguru.core.config;
 
 import com.dota.tamirguru.core.i18n.CalendarLocaleResolver;
+import com.dota.tamirguru.core.i18n.Translator;
 import com.dota.tamirguru.core.security.jwt.JWTInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-
-import java.util.Locale;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -68,7 +67,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         ResourceBundleMessageSource rs = new ResourceBundleMessageSource();
         rs.addBasenames("messages/error/error_messages",
                 "messages/app/app_messages",
-                "messages/app/meeting_messages",
                 "messages/validation/validation_messages",
                 "org/hibernate/validator/ValidationMessages");
         rs.setDefaultEncoding("UTF-8");
@@ -87,7 +85,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         CalendarLocaleResolver resolver = new CalendarLocaleResolver();
-        resolver.setDefaultLocale(new Locale("tr"));
+        resolver.setDefaultLocale(Translator.DEFAULT_LOCALE);
         return resolver;
     }
 
