@@ -7,18 +7,14 @@
 package com.dota.tamirguru.entitites;
 
 import com.dota.tamirguru.enums.RoleEnum;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 
@@ -26,14 +22,9 @@ import java.time.LocalDate;
 @Setter
 @Table(name = "users")
 @Entity
-public class User implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class User extends BaseEntity {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String name;
     private String surname;
     private String email;

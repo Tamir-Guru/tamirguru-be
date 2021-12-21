@@ -16,14 +16,13 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
-@Table(name = "cities")
+@Table(name = "countries")
 @Entity
 @EqualsAndHashCode(callSuper = true)
-public class City extends BaseEntity {
+public class Country extends BaseEntity {
 
-    private Long cityId;
     private String name;
-    private String countryCode;
+    private String code;
     private String language;
 
 }

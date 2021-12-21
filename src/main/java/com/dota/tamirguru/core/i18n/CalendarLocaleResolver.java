@@ -10,12 +10,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 public class CalendarLocaleResolver extends AcceptHeaderLocaleResolver {
-    List<Locale> locales = Arrays.asList(new Locale("en"));
+    List<Locale> locales = List.of(new Locale("tr"), new Locale("en"));
 
     @Override
     public Locale resolveLocale(HttpServletRequest request) {

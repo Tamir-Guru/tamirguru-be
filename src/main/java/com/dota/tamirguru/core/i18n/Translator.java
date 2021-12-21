@@ -41,4 +41,12 @@ public class Translator {
     public static Locale getLanguage() {
         return LocaleContextHolder.getLocale();
     }
+
+    public static String getLanguageUpper() {
+        return LocaleContextHolder.getLocale().getLanguage().toUpperCase(Locale.UK);
+    }
+
+    public static String getDefaultLanguageUpper() {
+        return Locale.getDefault().getLanguage().toUpperCase(Locale.UK);
+    }
 }

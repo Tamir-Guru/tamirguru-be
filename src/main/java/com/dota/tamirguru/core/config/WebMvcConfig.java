@@ -19,6 +19,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import java.util.Locale;
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -55,6 +57,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/resendVerification",
                         "/cities",
                         "/districts",
+                        "/countries",
                         "/resetPassword"
                 )
                 .pathMatcher(new AntPathMatcher());
@@ -83,7 +86,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver() {
-        return new CalendarLocaleResolver();
+        CalendarLocaleResolver resolver = new CalendarLocaleResolver();
+        resolver.setDefaultLocale(new Locale("tr"));
+        return resolver;
     }
 
 }
