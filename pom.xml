@@ -33,24 +33,6 @@
         <jjwt.version>0.11.2</jjwt.version>
         <commons-text.version>1.9</commons-text.version>
     </properties>
-    <profiles>
-        <profile>
-            <id>local</id>
-            <properties>
-                <db.url>jdbc:postgresql://localhost:5432/tamirguru</db.url>
-                <db.username>tamirguru</db.username>
-                <db.password>123456</db.password>
-            </properties>
-        </profile>
-        <profile>
-            <id>heroku</id>
-            <properties>
-                <db.url>jdbc:postgresql://ec2-54-74-14-109.eu-west-1.compute.amazonaws.com:5432/d1np0rn6s94c5r</db.url>
-                <db.username>egonruitgiffqn</db.username>
-                <db.password>0cac00a32a7b15e8f0d849edd8434428128ad9a9d0c30b1ca4d9b8b82aac292d</db.password>
-            </properties>
-        </profile>
-    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -154,6 +136,16 @@
             <artifactId>commons-text</artifactId>
             <version>${commons-text.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.xml.ws</groupId>
+            <artifactId>jaxws-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-ri</artifactId>
+            <version>2.3.3</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -220,6 +212,27 @@
                         <version>42.2.24</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <packageName>annotations.com.dota.tamirguru.nvi</packageName>
+                    <sourceDestDir>
+                        ${project.build.directory}/generated-sources/
+                    </sourceDestDir>
+                    <wsdlUrls>
+                        <wsdlUrl>https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?wsdl</wsdlUrl>
+                    </wsdlUrls>
+                </configuration>
             </plugin>
         </plugins>
     </build>
