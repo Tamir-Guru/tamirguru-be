@@ -24,6 +24,7 @@ public class OpenApiConfig {
     private static final String API_KEY = "apiKey";
 
     @Bean
+    @Profile("default")
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .components(new Components()
