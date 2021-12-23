@@ -6,18 +6,19 @@
  **/
 package com.dota.tamirguru.services;
 
-import com.dota.tamirguru.entitites.City;
-import com.dota.tamirguru.entitites.Country;
-import com.dota.tamirguru.entitites.District;
+import com.dota.tamirguru.models.responses.locations.CityResponse;
+import com.dota.tamirguru.models.responses.locations.CountryResponse;
+import com.dota.tamirguru.models.responses.locations.DistrictResponse;
 
 import java.util.List;
 
 public interface LocationService {
 
-    List<Country> getCountries(String language);
+    List<CountryResponse> getCountries(String language);
 
-    List<City> getCities(String language, String countryCode);
+    List<CityResponse> getCities(String language, String countryCode);
 
-    List<District> getDistricts(String language, String cityId);
+    List<DistrictResponse> getDistricts(String language, String cityId);
 
+    boolean existById(Long districtId);
 }

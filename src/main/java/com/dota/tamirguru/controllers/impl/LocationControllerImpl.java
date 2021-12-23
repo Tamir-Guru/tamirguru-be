@@ -8,9 +8,9 @@ package com.dota.tamirguru.controllers.impl;
 
 import com.dota.tamirguru.controllers.LocationController;
 import com.dota.tamirguru.core.i18n.Translator;
-import com.dota.tamirguru.entitites.City;
-import com.dota.tamirguru.entitites.Country;
-import com.dota.tamirguru.entitites.District;
+import com.dota.tamirguru.models.responses.locations.CityResponse;
+import com.dota.tamirguru.models.responses.locations.CountryResponse;
+import com.dota.tamirguru.models.responses.locations.DistrictResponse;
 import com.dota.tamirguru.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,30 +25,18 @@ public class LocationControllerImpl implements LocationController {
     private LocationService locationService;
 
     @Override
-    public ResponseEntity<List<Country>> getCountries() {
-        List<Country> countries = locationService.getCountries(Translator.getLanguageUpper());
-        if (countries.isEmpty()) {
-            return ResponseEntity.ok(locationService.getCountries(Translator.getDefaultLanguageUpper()));
-        }
-        return ResponseEntity.ok(countries);
+    public ResponseEntity<List<CountryResponse>> getCountries() {
+        return ResponseEntity.ok(locationService.getCountries(Translator.getLanguageUpper()));
     }
 
     @Override
-    public ResponseEntity<List<City>> getCities(String countryCode) {
-        List<City> cities = locationService.getCities(Translator.getLanguageUpper(), countryCode);
-        if (cities.isEmpty()) {
-            return ResponseEntity.ok(locationService.getCities(Translator.getDefaultLanguageUpper(), countryCode));
-        }
-        return ResponseEntity.ok(cities);
+    public ResponseEntity<List<CityResponse>> getCities(String countryCode) {
+        return ResponseEntity.ok(locationService.getCities(Translator.getDefaultLanguageUpper(), countryCode));
     }
 
     @Override
-    public ResponseEntity<List<District>> getDistricts(String cityId) {
-        List<District> districts = locationService.getDistricts(Translator.getLanguageUpper(), cityId);
-        if (districts.isEmpty()) {
-            return ResponseEntity.ok(locationService.getDistricts(Translator.getDefaultLanguageUpper(), cityId));
-        }
-        return ResponseEntity.ok(districts);
+    public ResponseEntity<List<DistrictResponse>> getDistricts(String cityId) {
+        return ResponseEntity.ok(locationService.getDistricts(Translator.getDefaultLanguageUpper(), cityId));
     }
 
 }

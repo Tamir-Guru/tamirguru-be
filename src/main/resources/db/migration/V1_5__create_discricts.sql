@@ -6,7 +6,7 @@ CREATE TABLE districts
     city_id   text       not null,
     region_id text,
     language  varchar(3) not null,
-    name      text
+    name text not null
 );
 
 create index district_city_id_index

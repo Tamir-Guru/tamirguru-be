@@ -52,6 +52,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/document",
                         "/favicon.ico",
                         "/users/verifyEmail",
+                        "/merchants/types",
                         "/login",
                         "/resendVerification",
                         "/cities",
@@ -68,9 +69,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         rs.addBasenames("messages/error/error_messages",
                 "messages/app/app_messages",
                 "messages/validation/validation_messages",
+                "messages/multivalues/city_values",
+                "messages/multivalues/country_values",
+                "messages/multivalues/district_values",
+                "messages/multivalues/merchant_types",
                 "org/hibernate/validator/ValidationMessages");
         rs.setDefaultEncoding("UTF-8");
-        rs.setUseCodeAsDefaultMessage(true);
+        rs.setDefaultLocale(Translator.DEFAULT_LOCALE);
+        rs.setUseCodeAsDefaultMessage(false);
         return rs;
     }
 

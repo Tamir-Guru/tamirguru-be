@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -21,7 +24,9 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 public class District extends BaseEntity {
 
-    private String cityId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "city_id", referencedColumnName = "cityCode", insertable = false, updatable = false)
+    private City city;
     private String regionId;
     private String name;
     private String language;

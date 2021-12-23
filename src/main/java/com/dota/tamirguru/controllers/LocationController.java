@@ -7,9 +7,9 @@
 package com.dota.tamirguru.controllers;
 
 import com.dota.tamirguru.core.exception.ErrorData;
-import com.dota.tamirguru.entitites.City;
-import com.dota.tamirguru.entitites.Country;
-import com.dota.tamirguru.entitites.District;
+import com.dota.tamirguru.models.responses.locations.CityResponse;
+import com.dota.tamirguru.models.responses.locations.CountryResponse;
+import com.dota.tamirguru.models.responses.locations.DistrictResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -31,32 +31,32 @@ public interface LocationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned country list",
                     content = {@Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = Country.class)))}),
+                            array = @ArraySchema(schema = @Schema(implementation = CountryResponse.class)))}),
             @ApiResponse(responseCode = "400", description = "Getting city list error", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ErrorData.class))})})
     @GetMapping(value = "/countries")
-    ResponseEntity<List<Country>> getCountries();
+    ResponseEntity<List<CountryResponse>> getCountries();
 
     @Operation(summary = "Get City List")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned city list",
                     content = {@Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = City.class)))}),
+                            array = @ArraySchema(schema = @Schema(implementation = CityResponse.class)))}),
             @ApiResponse(responseCode = "400", description = "Getting city list error", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ErrorData.class))})})
     @GetMapping(value = "/cities")
-    ResponseEntity<List<City>> getCities(@Parameter(description = "Country Code", example = "TR", required = true, name = "countryCode")
-                                         @RequestParam String countryCode);
+    ResponseEntity<List<CityResponse>> getCities(@Parameter(description = "Country Code", example = "TR", required = true, name = "countryCode")
+                                                 @RequestParam String countryCode);
 
     @Operation(summary = "Get District List")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned districts list",
                     content = {@Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = District.class)))}),
+                            array = @ArraySchema(schema = @Schema(implementation = DistrictResponse.class)))}),
             @ApiResponse(responseCode = "400", description = "Getting district list error", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ErrorData.class))})})
     @GetMapping(value = "/districts")
-    ResponseEntity<List<District>> getDistricts(@Parameter(description = "City Code", example = "ORDU", required = true, name = "cityId")
-                                                @RequestParam String cityId);
+    ResponseEntity<List<DistrictResponse>> getDistricts(@Parameter(description = "City Code", example = "63", required = true, name = "cityId")
+                                                        @RequestParam String cityId);
 
 }

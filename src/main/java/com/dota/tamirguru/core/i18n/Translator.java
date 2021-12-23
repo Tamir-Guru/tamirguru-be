@@ -36,10 +36,6 @@ public class Translator {
         return messageSource.getMessage(message, args, locale);
     }
 
-    public static String getMessage(String message, Locale locale) {
-        return messageSource.getMessage(message, null, locale);
-    }
-
     public static Locale getLanguage() {
         return LocaleContextHolder.getLocale();
     }

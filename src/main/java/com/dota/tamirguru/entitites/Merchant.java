@@ -1,9 +1,9 @@
 /*
  * @author : Oguz Kahraman
- * @since : 3.08.2021
+ * @since : 23 Ara 2021
  *
- * Copyright - Tamir Guru App Java API
- **/
+ * Copyright - TamirGuru
+ */
 package com.dota.tamirguru.entitites;
 
 import lombok.EqualsAndHashCode;
@@ -16,19 +16,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Getter
 @Setter
-@Table(name = "cities")
+@Table(name = "merchants")
 @Entity
 @EqualsAndHashCode(callSuper = true)
-public class City extends BaseEntity {
+public class Merchant extends BaseEntity {
 
-    private String cityCode;
     private String name;
+    private String phoneNumber;
+    private String merchantType;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "country_code", referencedColumnName = "code", insertable = false, updatable = false)
-    private Country country;
-    private String language;
+    @JoinColumn(name = "district_id", referencedColumnName = "id")
+    private District district = new District();
+    private String address;
+    private Double longitude;
+    private Double latitude;
 
 }

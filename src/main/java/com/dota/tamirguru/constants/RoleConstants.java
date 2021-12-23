@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RoleConstants {
 
-    public static final String FREE = "ROLE_FREE";
     public static final String INDIVIDUAL = "ROLE_INDIVIDUAL";
     public static final String COMMERCIAL = "ROLE_COMMERCIAL";
 
