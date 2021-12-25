@@ -6,7 +6,7 @@
  **/
 package com.dota.tamirguru.validators;
 
-import com.dota.tamirguru.services.MerchantService;
+import com.dota.tamirguru.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,17 +14,14 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @Component
-public class MerchantValidator implements ConstraintValidator<Merchant, String> {
+public class CityValidator implements ConstraintValidator<City, String> {
 
     @Autowired
-    private MerchantService merchantService;
+    private LocationService locationService;
 
     @Override
     public boolean isValid(String field, ConstraintValidatorContext context) {
-        if (field.isEmpty()) {
-            return true;
-        }
-        return merchantService.getMerchantMap().contains(field);
+        return locationService.existByCityCode(field);
     }
 
 }

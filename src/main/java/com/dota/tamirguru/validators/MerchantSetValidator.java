@@ -12,19 +12,20 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Set;
 
 @Component
-public class MerchantValidator implements ConstraintValidator<Merchant, String> {
+public class MerchantSetValidator implements ConstraintValidator<Merchant, Set<String>> {
 
     @Autowired
     private MerchantService merchantService;
 
     @Override
-    public boolean isValid(String field, ConstraintValidatorContext context) {
+    public boolean isValid(Set<String> field, ConstraintValidatorContext context) {
         if (field.isEmpty()) {
             return true;
         }
-        return merchantService.getMerchantMap().contains(field);
+        return merchantService.getMerchantMap().containsAll(field);
     }
 
 }

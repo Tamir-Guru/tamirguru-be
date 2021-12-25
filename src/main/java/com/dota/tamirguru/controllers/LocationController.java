@@ -10,6 +10,7 @@ import com.dota.tamirguru.core.exception.ErrorData;
 import com.dota.tamirguru.models.responses.locations.CityResponse;
 import com.dota.tamirguru.models.responses.locations.CountryResponse;
 import com.dota.tamirguru.models.responses.locations.DistrictResponse;
+import com.dota.tamirguru.validators.City;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -57,6 +58,6 @@ public interface LocationController {
                     schema = @Schema(implementation = ErrorData.class))})})
     @GetMapping(value = "/districts")
     ResponseEntity<List<DistrictResponse>> getDistricts(@Parameter(description = "City Code", example = "63", required = true, name = "cityId")
-                                                        @RequestParam String cityId);
+                                                        @RequestParam @City String cityId);
 
 }

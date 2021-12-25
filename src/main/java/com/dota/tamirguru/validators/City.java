@@ -15,12 +15,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = DistrictValidator.class)
+@Constraint(validatedBy = CityValidator.class)
 @Target({ElementType.FIELD, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface District {
+public @interface City {
 
-    String message() default "{error.district.id}";
+    String message() default "{error.city.code}";
 
     Class<?>[] groups() default {};
 

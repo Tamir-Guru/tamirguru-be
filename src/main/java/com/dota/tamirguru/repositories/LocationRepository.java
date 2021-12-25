@@ -13,6 +13,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface LocationRepository<T extends BaseEntity> extends CrudRepository<T, Long> {
@@ -29,5 +30,12 @@ public interface LocationRepository<T extends BaseEntity> extends CrudRepository
     @Cacheable(cacheNames = "allDistricts")
     List<String> getDistrictList(String cityId);
 
+    @Query("select distinct(c.cityCode) from City c")
+    @Cacheable(cacheNames = "cityCodes")
+    Set<String> getCityCodes();
+
+    @Query("select distinct(d.id) from District d")
+    @Cacheable(cacheNames = "districtCodes")
+    Set<Long> getDistrictCodes();
 
 }

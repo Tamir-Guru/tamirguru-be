@@ -7,9 +7,11 @@
 package com.dota.tamirguru.controllers.impl;
 
 import com.dota.tamirguru.controllers.MerchantController;
+import com.dota.tamirguru.core.annotations.SkipSecurity;
 import com.dota.tamirguru.core.i18n.Translator;
 import com.dota.tamirguru.models.internals.merchant.MerchantTypeName;
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
+import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
 import com.dota.tamirguru.models.responses.merchant.MerchantResponse;
 import com.dota.tamirguru.services.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +38,14 @@ public class MerchantControllerImpl implements MerchantController {
     @Override
     @PreAuthorize("hasRole('ROLE_COMMERCIAL')")
     public ResponseEntity<MerchantResponse> createMerchant(@Valid MerchantCreateRequest request) {
-        return ResponseEntity.ok(merchantService.saveMerchant(request));
+        Long id = merchantService.saveMerchant(request);
+        return ResponseEntity.ok(merchantService.getMerchantFromId(id));
     }
 
     @Override
-    public ResponseEntity<List<MerchantResponse>> findMerchantsFromDistrictId(Long districtId, Integer pageNumber, Integer pageSize) {
-        return ResponseEntity.ok(merchantService.getMerchantByDistrict(districtId, PageRequest.of(pageNumber - 1, pageSize, Sort.by("name").ascending())));
+    @SkipSecurity
+    public ResponseEntity<List<MerchantResponse>> findMerchantsFromDistrictId(@Valid MerchantFilter merchantFilter, Integer pageNumber, Integer pageSize) {
+        return ResponseEntity.ok(merchantService.getMerchantByDistrict(merchantFilter, PageRequest.of(pageNumber - 1, pageSize, Sort.by("name").ascending())));
     }
 
 }

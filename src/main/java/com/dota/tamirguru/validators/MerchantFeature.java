@@ -1,9 +1,9 @@
 /*
  * @author : Oguz Kahraman
- * @since : 28.02.2021
+ * @since : 25 Ara 2021
  *
- * Copyright - Collige Java API
- **/
+ * Copyright - TamirGuru
+ */
 package com.dota.tamirguru.validators;
 
 import javax.validation.Constraint;
@@ -15,12 +15,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = DistrictValidator.class)
-@Target({ElementType.FIELD, ElementType.TYPE_USE})
+@Constraint(validatedBy = MerchantFeatureValidator.class)
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface District {
+public @interface MerchantFeature {
 
-    String message() default "{error.district.id}";
+    String message() default "{error.merchant.feature}";
 
     Class<?>[] groups() default {};
 

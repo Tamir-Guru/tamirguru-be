@@ -9,9 +9,13 @@ package com.dota.tamirguru.core.config;
 import com.dota.tamirguru.core.i18n.CalendarLocaleResolver;
 import com.dota.tamirguru.core.i18n.Translator;
 import com.dota.tamirguru.core.security.jwt.JWTInterceptor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
@@ -20,8 +24,14 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import java.io.IOException;
+
 @Configuration
+@Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Bean
     public InternalResourceViewResolver defaultViewResolver() {
@@ -66,14 +76,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource rs = new ResourceBundleMessageSource();
-        rs.addBasenames("messages/error/error_messages",
-                "messages/app/app_messages",
-                "messages/validation/validation_messages",
-                "messages/multivalues/city_values",
-                "messages/multivalues/country_values",
-                "messages/multivalues/district_values",
-                "messages/multivalues/merchant_types",
-                "org/hibernate/validator/ValidationMessages");
+        rs.addBasenames("org/hibernate/validator/ValidationMessages");
+        try {
+            for (Resource resource : applicationContext.getResources("classpath:/messages/**/*.properties")) {
+                rs.addBasenames("messages/" + resource.getURL().getPath().split("messages/")[1].split(".properties")[0]);
+            }
+        } catch (IOException exception) {
+            log.error("Message source open error");
+        }
         rs.setDefaultEncoding("UTF-8");
         rs.setDefaultLocale(Translator.DEFAULT_LOCALE);
         rs.setUseCodeAsDefaultMessage(false);

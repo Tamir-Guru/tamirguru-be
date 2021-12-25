@@ -15,8 +15,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = MerchantValidator.class)
-@Target({ElementType.FIELD})
+@Constraint(validatedBy = {MerchantValidator.class, MerchantSetValidator.class})
+@Target({ElementType.FIELD, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Merchant {
 

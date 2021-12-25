@@ -21,7 +21,7 @@ public class DistrictValidator implements ConstraintValidator<District, Long> {
 
     @Override
     public boolean isValid(Long field, ConstraintValidatorContext context) {
-        return locationService.existById(field);
+        return locationService.existByDistrictId(field);
     }
 
 }

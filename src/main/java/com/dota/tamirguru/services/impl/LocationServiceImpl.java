@@ -11,7 +11,6 @@ import com.dota.tamirguru.core.i18n.Translator;
 import com.dota.tamirguru.models.responses.locations.CityResponse;
 import com.dota.tamirguru.models.responses.locations.CountryResponse;
 import com.dota.tamirguru.models.responses.locations.DistrictResponse;
-import com.dota.tamirguru.repositories.DistrictRepository;
 import com.dota.tamirguru.repositories.LocationRepository;
 import com.dota.tamirguru.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @SuppressWarnings("java:S3740")
@@ -27,9 +27,6 @@ public class LocationServiceImpl implements LocationService {
 
     @Autowired
     private LocationRepository locationRepository;
-
-    @Autowired
-    private DistrictRepository districtRepository;
 
     @Cacheable(cacheNames = "countries")
     @Override
@@ -62,8 +59,15 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public boolean existById(Long districtId) {
-        return districtRepository.existsById(districtId);
+    public boolean existByDistrictId(Long districtId) {
+        Set<Long> cities = locationRepository.getDistrictCodes();
+        return cities.contains(districtId);
+    }
+
+    @Override
+    public boolean existByCityCode(String cityCode) {
+        Set<String> cities = locationRepository.getCityCodes();
+        return cities.contains(cityCode);
     }
 
 }

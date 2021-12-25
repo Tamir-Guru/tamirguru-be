@@ -6,10 +6,12 @@
  */
 package com.dota.tamirguru.models.responses.merchant;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class MerchantResponse {
@@ -19,12 +21,6 @@ public class MerchantResponse {
 
     @Schema(description = "Merchant Phone Number", example = "5398760896")
     private String phoneNumber;
-
-    @Schema(description = "Merchant Type Id", example = "OTMR")
-    private String merchantTypeId;
-
-    @Schema(description = "Merchant Type", example = "OTMR")
-    private String merchantType;
 
     @Schema(description = "Merchant Address", example = "Fsm Mah. No:22")
     private String fullAddress;
@@ -48,8 +44,12 @@ public class MerchantResponse {
     private Double longitude;
 
     @Schema(description = "Address District Id", example = "29.032444567236276")
-    @NotNull
     private Double latitude;
 
+    @Schema(description = "Available merchant types", example = "Test Oto Tamirci")
+    private Set<String> merchantTypes;
+
+    @ArraySchema(schema = @Schema(description = "Merchant details", implementation = MerchantFeatureResponse.class))
+    private Set<MerchantFeatureResponse> features = new HashSet<>();
 
 }

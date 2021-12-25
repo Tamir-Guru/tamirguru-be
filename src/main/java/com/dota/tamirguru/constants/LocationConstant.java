@@ -16,5 +16,6 @@ public class LocationConstant {
     public static final String COUNTRY_PREFIX = "country.value.";
     public static final String CITY_PREFIX = "city.value.";
     public static final String DISTRICT_PREFIX = "district.value.";
+    public static final String CAR_BRAND_PREFIX = "car.brand.";
 
 }

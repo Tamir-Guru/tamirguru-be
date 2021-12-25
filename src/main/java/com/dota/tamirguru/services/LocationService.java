@@ -20,5 +20,7 @@ public interface LocationService {
 
     List<DistrictResponse> getDistricts(String language, String cityId);
 
-    boolean existById(Long districtId);
+    boolean existByDistrictId(Long districtId);
+
+    boolean existByCityCode(String cityCode);
 }
