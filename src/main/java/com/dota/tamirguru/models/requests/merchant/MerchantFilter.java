@@ -6,6 +6,7 @@
  */
 package com.dota.tamirguru.models.requests.merchant;
 
+import com.dota.tamirguru.enums.Feature;
 import com.dota.tamirguru.validators.City;
 import com.dota.tamirguru.validators.District;
 import com.dota.tamirguru.validators.Merchant;
@@ -30,5 +31,11 @@ public class MerchantFilter {
 
     @ArraySchema(schema = @Schema(description = "City Codes", example = "1"))
     private Set<@NotBlank @City String> cities = new HashSet<>();
+
+    @ArraySchema(schema = @Schema(description = "Additional feature types", example = "CAR_BRAND"))
+    private Set<Feature> features = new HashSet<>();
+
+    @ArraySchema(schema = @Schema(description = "Additional feature values", example = "1"))
+    private Set<Long> values;
 
 }

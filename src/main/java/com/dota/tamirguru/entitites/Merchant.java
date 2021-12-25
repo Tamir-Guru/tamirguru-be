@@ -37,7 +37,7 @@ public class Merchant extends BaseEntity {
     @Type(type = "string-array")
     private String[] merchantTypes;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "district_id", referencedColumnName = "id")
     private District district = new District();
 

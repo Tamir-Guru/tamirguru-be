@@ -14,6 +14,7 @@ import com.dota.tamirguru.models.internals.merchant.MerchantTypeName;
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
 import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
 import com.dota.tamirguru.models.responses.merchant.MerchantResponse;
+import com.dota.tamirguru.repositories.LocationRepository;
 import com.dota.tamirguru.repositories.MerchantRepository;
 import com.dota.tamirguru.repositories.MerchantTypeRepository;
 import com.dota.tamirguru.services.MerchantService;
@@ -37,6 +38,9 @@ public class MerchantServiceImpl implements MerchantService {
     private MerchantRepository merchantRepository;
 
     @Autowired
+    private LocationRepository locationRepository;
+
+    @Autowired
     private MerchantMapper merchantMapper;
 
     @Override
@@ -56,18 +60,14 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public MerchantResponse getMerchantFromId(Long id) {
-        return merchantMapper.mapEntityToResponse(merchantRepository.findById(id).orElse(new Merchant()));
-    }
-
-
-    @Override
     @Transactional
-    public Long saveMerchant(MerchantCreateRequest request) {
+    public MerchantResponse saveMerchant(MerchantCreateRequest request) {
         Merchant merchant = merchantMapper.mapRequestToEntity(request);
         merchantRepository.save(merchant);
-        return merchant.getId();
+        merchant.setDistrict(locationRepository.getDistrictById(request.getDistrictId()));
+        return merchantMapper.mapEntityToResponse(merchant);
     }
+
 
     @Override
     public List<MerchantResponse> getMerchantByDistrict(MerchantFilter filter, Pageable pageable) {

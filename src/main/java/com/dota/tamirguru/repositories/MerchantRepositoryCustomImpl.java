@@ -1,6 +1,7 @@
 package com.dota.tamirguru.repositories;
 
 import com.dota.tamirguru.entitites.Merchant;
+import com.dota.tamirguru.enums.Feature;
 import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
 import org.springframework.data.domain.Pageable;
 
@@ -15,7 +16,8 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
 
     private static final String QUERY = "SELECT * from merchants mrc " +
             " left outer join districts district0_ on mrc.district_id = district0_.id" +
-            " left outer join cities city1_ on district0_.city_id = city1_.city_code ";
+            " left outer join cities city1_ on district0_.city_id = city1_.city_code" +
+            " left outer join merchant_features merchant_features_1_ on merchant_features_1_.merchant_id = mrc.id ";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -28,6 +30,8 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
         filterByType(filter, conditions);
         filterByCity(filter, conditions);
         filterByDistrict(filter, conditions);
+        filterByFeatures(filter, conditions);
+        filterByFeatureValues(filter, conditions);
         createQueryAndPagination(pageable, str, conditions);
         Query q = entityManager.createNativeQuery(str.toString(), Merchant.class);
         return q.getResultList();
@@ -65,6 +69,29 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
         }
     }
 
+    private void filterByFeatures(MerchantFilter filter, List<String> conditions) {
+        if (!filter.getFeatures().isEmpty()) {
+            StringBuilder builder = new StringBuilder("merchant_features_1_.type in (");
+            String prefix = "";
+            for (Feature feature : filter.getFeatures()) {
+                builder.append(prefix);
+                prefix = ",";
+                builder.append('\'').append(feature.name()).append('\'');
+            }
+            builder.append(")");
+            conditions.add(builder.toString());
+        }
+    }
+
+    private void filterByFeatureValues(MerchantFilter filter, List<String> conditions) {
+        if (!filter.getValues().isEmpty()) {
+            StringBuilder builder = new StringBuilder("ARRAY[");
+            genericNumberIn(builder, filter.getValues());
+            builder.append("] && merchant_features_1_.values");
+            conditions.add(builder.toString());
+        }
+    }
+
     private void createQueryAndPagination(Pageable pageable, StringBuilder str, List<String> conditions) {
         if (!conditions.isEmpty()) {
             str.append("where ");
@@ -84,6 +111,15 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
             builder.append(prefix);
             prefix = ",";
             builder.append('\'').append(type).append('\'');
+        }
+    }
+
+    private void genericNumberIn(StringBuilder builder, Set<? extends Number> types) {
+        String prefix = "";
+        for (Number type : types) {
+            builder.append(prefix);
+            prefix = ",";
+            builder.append(type).append("\\:\\:bigint");
         }
     }
 

@@ -7,6 +7,7 @@
 package com.dota.tamirguru.repositories;
 
 import com.dota.tamirguru.entitites.BaseEntity;
+import com.dota.tamirguru.entitites.District;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -37,5 +38,8 @@ public interface LocationRepository<T extends BaseEntity> extends CrudRepository
     @Query("select distinct(d.id) from District d")
     @Cacheable(cacheNames = "districtCodes")
     Set<Long> getDistrictCodes();
+
+    @Query("select d from District d where d.id = :id")
+    District getDistrictById(Long id);
 
 }

@@ -21,9 +21,7 @@ public interface MerchantService {
 
     Set<String> getMerchantMap();
 
-    MerchantResponse getMerchantFromId(Long id);
-
-    Long saveMerchant(MerchantCreateRequest request);
+    MerchantResponse saveMerchant(MerchantCreateRequest request);
 
     List<MerchantResponse> getMerchantByDistrict(MerchantFilter filter, Pageable pageable);
 }

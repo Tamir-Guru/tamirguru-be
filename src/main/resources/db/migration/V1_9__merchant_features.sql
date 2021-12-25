@@ -15,3 +15,6 @@ create index merchant_features_type_index
 
 create index merchant_features_merchant_id_index
     on merchant_features (merchant_id);
+
+create unique index merchant_type_id_uindex
+    on merchant_features (merchant_id, type);

@@ -38,8 +38,7 @@ public class MerchantControllerImpl implements MerchantController {
     @Override
     @PreAuthorize("hasRole('ROLE_COMMERCIAL')")
     public ResponseEntity<MerchantResponse> createMerchant(@Valid MerchantCreateRequest request) {
-        Long id = merchantService.saveMerchant(request);
-        return ResponseEntity.ok(merchantService.getMerchantFromId(id));
+        return ResponseEntity.ok(merchantService.saveMerchant(request));
     }
 
     @Override
