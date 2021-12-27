@@ -17,3 +17,7 @@ create
     unique index users_email_uindex
     on users (email);
 
+create
+    unique index users_tckn_uindex
+    on users (tckn);
+

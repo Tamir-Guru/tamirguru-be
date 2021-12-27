@@ -72,8 +72,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encodePassword(request.getPassword(), user.getEmail()));
         nviCheck(user);
         userRepository.save(user);
-        mailService.sendMailValidation(new GenericMailRequest(Collections.singleton(user.getEmail()), user.getName(),
-                validationService.createValidationInfo(user, ValidationType.EMAIL), Translator.getLanguage()));
+        if (!RoleEnum.COMMERCIAL.equals(user.getRole())) {
+            mailService.sendMailValidation(new GenericMailRequest(Collections.singleton(user.getEmail()), user.getName(),
+                    validationService.createValidationInfo(user, ValidationType.EMAIL), Translator.getLanguage()));
+        }
         UserResponse response = userMapper.mapToModel(user);
         response.setToken(jwtService.createToken(user));
         return response;
@@ -273,6 +275,7 @@ public class UserServiceImpl implements UserService {
             if (!bool) {
                 throw new GuruException(HttpStatus.FORBIDDEN, "User information not valid", "NOT_VALID_INFO");
             }
+            user.setVerified(true);
         }
     }
 
