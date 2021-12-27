@@ -27,11 +27,13 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
     public List<Merchant> filter(MerchantFilter filter, Pageable pageable) {
         StringBuilder str = new StringBuilder(QUERY);
         List<String> conditions = new ArrayList<>();
-        filterByType(filter, conditions);
-        filterByCity(filter, conditions);
-        filterByDistrict(filter, conditions);
-        filterByFeatures(filter, conditions);
-        filterByFeatureValues(filter, conditions);
+        if (filter != null) {
+            filterByType(filter, conditions);
+            filterByCity(filter, conditions);
+            filterByDistrict(filter, conditions);
+            filterByFeatures(filter, conditions);
+            filterByFeatureValues(filter, conditions);
+        }
         createQueryAndPagination(pageable, str, conditions);
         Query q = entityManager.createNativeQuery(str.toString(), Merchant.class);
         return q.getResultList();
@@ -84,7 +86,7 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
     }
 
     private void filterByFeatureValues(MerchantFilter filter, List<String> conditions) {
-        if (!filter.getValues().isEmpty()) {
+        if (filter.getFeatures() != null && !filter.getFeatures().isEmpty()) {
             StringBuilder builder = new StringBuilder("ARRAY[");
             genericNumberIn(builder, filter.getValues());
             builder.append("] && merchant_features_1_.values");

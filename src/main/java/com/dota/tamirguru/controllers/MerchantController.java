@@ -59,7 +59,7 @@ public interface MerchantController {
             @ApiResponse(responseCode = "400", description = "Merchant list get error", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ErrorData.class))})})
     @GetMapping(value = "/merchants")
-    ResponseEntity<List<MerchantResponse>> findMerchantsFromDistrictId(MerchantFilter filter,
+    ResponseEntity<List<MerchantResponse>> findMerchantsFromDistrictId(@Parameter @RequestParam(required = false) MerchantFilter filter,
                                                                        @Parameter(description = "Page Number", example = "1", name = "pageNumber")
                                                                        @RequestParam(defaultValue = "1", required = false) @Min(1) Integer pageNumber,
                                                                        @Parameter(description = "Page Size", example = "5", name = "pageSize")

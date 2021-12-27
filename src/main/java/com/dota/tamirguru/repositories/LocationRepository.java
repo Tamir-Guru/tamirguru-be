@@ -23,11 +23,11 @@ public interface LocationRepository<T extends BaseEntity> extends CrudRepository
     @Cacheable(cacheNames = "allCountries")
     List<Object[]> getCountryList();
 
-    @Query("select distinct(c.cityCode) from City c where c.country.code = :countryCode")
+    @Query("select distinct(c.cityCode) from City c where c.country.code = :countryCode order by c.name")
     @Cacheable(cacheNames = "allCities")
     List<String> getCityList(String countryCode);
 
-    @Query("select distinct(d.id) from District d where d.city.cityCode= :cityId")
+    @Query("select distinct(d.id) from District d where d.city.cityCode= :cityId order by d.name")
     @Cacheable(cacheNames = "allDistricts")
     List<String> getDistrictList(String cityId);
 
