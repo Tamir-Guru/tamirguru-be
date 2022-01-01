@@ -1,0 +1,37 @@
+type Merchant {
+    merchantName: String
+    phoneNumber: String
+    fullAddress: String
+    countryPhoneCode: String
+    countryName: String
+    cityName: String
+    regionName: String
+    districtName: String
+    longitude: Float
+    latitude: Float
+    merchantTypes: [String]
+    features: [MerchantFeature]
+}
+
+input MerchantFilter {
+    types: [String]
+    districts: [Int]
+    cities: [String]
+    values: [Int]
+}
+
+type Feature {
+    feature: String!
+    values: [FeatureValue]!
+}
+
+type FeatureValue {
+    name: String!
+    value: Int!
+}
+
+type MerchantFeature {
+    featureSet: [Feature]!
+    merchantType: String!
+    merchantTypeId: String!
+}

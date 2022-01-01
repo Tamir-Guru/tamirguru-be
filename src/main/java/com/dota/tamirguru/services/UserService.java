@@ -6,6 +6,7 @@
  **/
 package com.dota.tamirguru.services;
 
+import com.dota.tamirguru.entitites.User;
 import com.dota.tamirguru.models.requests.user.AuthRequest;
 import com.dota.tamirguru.models.requests.user.ChangePasswordRequest;
 import com.dota.tamirguru.models.requests.user.ResendVerificationMailRequest;
@@ -20,6 +21,8 @@ public interface UserService {
     UserResponse createUser(UserCreateRequest request);
 
     UserResponse loginUser(AuthRequest authRequest);
+
+    User getFromUserName(String userName);
 
     UserResponse findByMail(String email);
 

@@ -41,10 +41,11 @@ public class Merchant extends BaseEntity {
     @JoinColumn(name = "district_id", referencedColumnName = "id")
     private District district = new District();
 
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "merchant_id", nullable = false)
     private List<MerchantFeature> features = new ArrayList<>();
 
+    private Long userId;
     private String address;
     private Double longitude;
     private Double latitude;

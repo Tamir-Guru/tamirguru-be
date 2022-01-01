@@ -28,11 +28,12 @@
             src/main/java/com/dota/tamirguru/CalendarApplication**
         </sonar.exclusions>
         <hibernate-types.version>2.14.0</hibernate-types.version>
-        <openapi.version>1.6.1</openapi.version>
+        <openapi.version>1.6.2</openapi.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <jjwt.version>0.11.2</jjwt.version>
         <commons-text.version>1.9</commons-text.version>
         <jax-ws.version>2.3.3</jax-ws.version>
+        <graphql.version>12.0.0</graphql.version>
     </properties>
     <dependencies>
         <dependency>
@@ -94,6 +95,16 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphql-spring-boot-starter</artifactId>
+            <version>${graphql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-extended-scalars</artifactId>
+            <version>17.0</version>
         </dependency>
         <dependency>
             <groupId>com.vladmihalcea</groupId>

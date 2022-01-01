@@ -56,14 +56,6 @@ public class GuruExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.getMessage(), ex.getReason(), ((ServletWebRequest) request).getRequest().getRequestURI()));
     }
 
-    @ExceptionHandler(value = AccessDeniedException.class)
-    protected ResponseEntity<Object> handleAccessDenied(WebRequest request, AccessDeniedException ex) {
-        log.error(MarkerFactory.getMarker(EXCEPTION), UNEXPECTED_TRACE, ExceptionUtils.getStackTrace(ex), ((ServletWebRequest) request).getRequest().getRequestURI());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(LocalDateTime.now().toString(), HttpStatus.FORBIDDEN.value(),
-                Translator.getMessage("error.not.has.permission"),
-                "AUTH_ERR", ((ServletWebRequest) request).getRequest().getRequestURI()));
-    }
-
     @ExceptionHandler
     protected ResponseEntity<Object> handleASMException(GuruException ex, WebRequest request) {
         log.error(MarkerFactory.getMarker(EXCEPTION), UNEXPECTED_TRACE, ExceptionUtils.getStackTrace(ex), ((ServletWebRequest) request).getRequest().getRequestURI());
@@ -78,8 +70,15 @@ public class GuruExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.getMessage(), "BAD_CREDENTIAL", ((ServletWebRequest) request).getRequest().getRequestURI()));
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<Object> handleAccessDenied4(AccessDeniedException ex, WebRequest request) {
+        log.error(MarkerFactory.getMarker(EXCEPTION), UNEXPECTED_TRACE, ExceptionUtils.getStackTrace(ex), ((ServletWebRequest) request).getRequest().getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorData(LocalDateTime.now().toString(), HttpStatus.UNAUTHORIZED.value(),
+                ex.getMessage(), "UNAUTHORIZED", ((ServletWebRequest) request).getRequest().getRequestURI()));
+    }
+
     @ExceptionHandler
-    protected ResponseEntity<Object> handleBadCredential(HttpClientErrorException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleClientError(HttpClientErrorException ex, WebRequest request) {
         log.error(MarkerFactory.getMarker(EXCEPTION), CLIENT_EXCEPTION, ExceptionUtils.getStackTrace(ex));
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorData(LocalDateTime.now().toString(), ex.getRawStatusCode(),
                 ex.getResponseBodyAsString(), "EXTERNAL_ERROR", ((ServletWebRequest) request).getRequest().getRequestURI()));
@@ -130,6 +129,7 @@ public class GuruExceptionHandler extends ResponseEntityExceptionHandler {
                 Translator.getMessage(UNKNOWN_EXCEPTION),
                 UNKNOWN_ERR, ((ServletWebRequest) request).getRequest().getRequestURI()));
     }
+
 
     private ResponseEntity<Object> validationExceptionMessageCreator(ServletWebRequest request, BindingResult bindingResult) {
         return ResponseEntity.badRequest().body(new ErrorData(LocalDateTime.now().toString(), HttpStatus.BAD_REQUEST.value(),

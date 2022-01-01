@@ -2,13 +2,12 @@
  * @author : Oguz Kahraman
  * @since : 12.02.2021
  *
- * Copyright - Collige Java API
+ * Copyright - Tamir Guru Java API
  **/
 package com.dota.tamirguru.core.config;
 
 import com.dota.tamirguru.core.i18n.CalendarLocaleResolver;
 import com.dota.tamirguru.core.i18n.Translator;
-import com.dota.tamirguru.core.security.jwt.JWTInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,11 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -38,39 +35,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new InternalResourceViewResolver();
     }
 
-    @Bean
-    public JWTInterceptor jwtInterceptor() {
-        return new JWTInterceptor();
-    }
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**");
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor())
-                .excludePathPatterns(
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/index.html",
-                        "/",
-                        "/error",
-                        "/error.html",
-                        "/document.html",
-                        "/document",
-                        "/favicon.ico",
-                        "/users/verifyEmail",
-                        "/merchants/types",
-                        "/login",
-                        "/resendVerification",
-                        "/cities",
-                        "/districts",
-                        "/countries",
-                        "/resetPassword"
-                )
-                .pathMatcher(new AntPathMatcher());
     }
 
     @Bean

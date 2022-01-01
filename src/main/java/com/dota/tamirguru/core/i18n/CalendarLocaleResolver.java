@@ -2,7 +2,7 @@
  * @author : oguzkahraman
  * @since : 22.05.2021
  *
- * Copyright - Collige Java API
+ * Copyright - Tamir Guru Java API
  **/
 package com.dota.tamirguru.core.i18n;
 

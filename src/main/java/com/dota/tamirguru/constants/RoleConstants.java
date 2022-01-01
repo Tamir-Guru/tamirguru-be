@@ -2,7 +2,7 @@
  * @author : Oguz Kahraman
  * @since : 16.09.2021
  *
- * Copyright - Collige App Java API
+ * Copyright - Tamir Guru App Java API
  **/
 package com.dota.tamirguru.constants;
 

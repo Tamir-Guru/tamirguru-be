@@ -46,8 +46,6 @@ public interface MerchantMapper {
     @Mapping(target = "features", ignore = true)
     MerchantResponse mapEntityToResponse(Merchant entity);
 
-    List<MerchantResponse> mapEntityListToResponseList(List<Merchant> entity);
-
     @AfterMapping
     default void afterRequestToEntity(@MappingTarget Merchant entity, MerchantCreateRequest request) {
         Set<MerchantFeatureRequest> merchantFeatureRequests = request.getMerchantFeatures();
@@ -76,7 +74,12 @@ public interface MerchantMapper {
         response.setCountryName(Translator.getMessage(LocationConstant.COUNTRY_PREFIX + entity.getDistrict().getCity().getCountry().getCode()));
         response.setCityName(Translator.getMessage(LocationConstant.CITY_PREFIX + entity.getDistrict().getCity().getCityCode()));
         response.setDistrictName(Translator.getMessage(LocationConstant.DISTRICT_PREFIX + entity.getDistrict().getId()));
-        Map<String, List<MerchantFeature>> featureMap = entity.getFeatures().stream().collect(groupingBy(MerchantFeature::getTypeId));
+        response.setMerchantTypes(new HashSet<>(Arrays.asList(entity.getMerchantTypes())));
+    }
+
+    default Set<MerchantFeatureResponse> featureMap(List<MerchantFeature> featuresList) {
+        Set<MerchantFeatureResponse> features = new HashSet<>();
+        Map<String, List<MerchantFeature>> featureMap = featuresList.stream().collect(groupingBy(MerchantFeature::getTypeId));
         for (Map.Entry<String, List<MerchantFeature>> entry : featureMap.entrySet()) {
             MerchantFeatureResponse response1 = new MerchantFeatureResponse();
             response1.setMerchantTypeId(entry.getKey());
@@ -92,9 +95,9 @@ public interface MerchantMapper {
                 }
                 response1.getFeatureSet().add(response2);
             }
-            response.getFeatures().add(response1);
+            features.add(response1);
         }
-        response.setMerchantTypes(new HashSet<>(Arrays.asList(entity.getMerchantTypes())));
+        return features;
     }
 
 }

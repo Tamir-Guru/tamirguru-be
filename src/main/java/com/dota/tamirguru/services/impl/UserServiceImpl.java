@@ -11,6 +11,7 @@ import com.dota.tamirguru.constants.GeneralMessageConstants;
 import com.dota.tamirguru.core.exception.GuruException;
 import com.dota.tamirguru.core.i18n.Translator;
 import com.dota.tamirguru.core.security.jwt.JWTService;
+import com.dota.tamirguru.core.utils.PasswordUtil;
 import com.dota.tamirguru.entitites.User;
 import com.dota.tamirguru.entitites.Validation;
 import com.dota.tamirguru.enums.RoleEnum;
@@ -31,14 +32,13 @@ import com.dota.tamirguru.repositories.UserRepository;
 import com.dota.tamirguru.services.MailService;
 import com.dota.tamirguru.services.UserService;
 import com.dota.tamirguru.services.ValidationService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.Collections;
 
 @Service
@@ -60,6 +60,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ValidationService validationService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordUtil passwordUtil;
+
+
     /**
      * This method creates new individual user
      *
@@ -69,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse createUser(UserCreateRequest request) {
         ifUserExistWithError(request.getEmail().toLowerCase());
         User user = userMapper.mapToModel(request);
-        user.setPassword(encodePassword(request.getPassword(), user.getEmail()));
+        user.setPassword(passwordUtil.encodePassword(request.getPassword(), user.getEmail()));
         nviCheck(user);
         userRepository.save(user);
         if (!RoleEnum.COMMERCIAL.equals(user.getRole())) {
@@ -94,13 +101,24 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(authRequest.getUsername().toLowerCase())
                 .orElseThrow(() -> new GuruException(HttpStatus.FORBIDDEN, Translator.getMessage(GeneralMessageConstants.WRONG_INFO),
                         GeneralMessageConstants.WRONG_INFO_ERR));
-        if (encodePassword(authRequest.getPassword(), user.getEmail().toLowerCase()).equals(user.getPassword())) {
-            UserResponse userResponse = userMapper.mapToModel(user);
-            userResponse.setToken(jwtService.createToken(user));
-            return userResponse;
-        }
-        throw new GuruException(HttpStatus.FORBIDDEN, Translator.getMessage(GeneralMessageConstants.WRONG_INFO),
-                GeneralMessageConstants.WRONG_INFO_ERR);
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user, authRequest.getPassword(), jwtService.getUserRoles(user)));
+        UserResponse userResponse = userMapper.mapToModel(user);
+        userResponse.setToken(jwtService.createToken(user));
+        return userResponse;
+    }
+
+    /**
+     * Performs login functions
+     * Checks user
+     * Checks password
+     *
+     * @return user data
+     **/
+    @Override
+    public User getFromUserName(String userName) {
+        return userRepository.findByEmail(userName.toLowerCase())
+                .orElseThrow(() -> new GuruException(HttpStatus.FORBIDDEN, Translator.getMessage(GeneralMessageConstants.WRONG_INFO),
+                        GeneralMessageConstants.WRONG_INFO_ERR));
     }
 
     /**
@@ -171,11 +189,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(ChangePasswordRequest request) {
         User user = jwtService.getLoggedUser();
-        if (!encodePassword(request.getOldPassword(), user.getEmail().toLowerCase()).equals(user.getPassword())) {
+        if (!passwordUtil.encodePassword(request.getOldPassword(), user.getEmail().toLowerCase()).equals(user.getPassword())) {
             throw new GuruException(HttpStatus.FORBIDDEN, Translator.getMessage(GeneralMessageConstants.WRONG_INFO),
                     GeneralMessageConstants.WRONG_INFO_ERR);
         }
-        user.setPassword(encodePassword(request.getNewPassword(), user.getEmail()));
+        user.setPassword(passwordUtil.encodePassword(request.getNewPassword(), user.getEmail()));
         userRepository.save(user);
     }
 
@@ -209,7 +227,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new GuruException(HttpStatus.BAD_REQUEST, Translator.getMessage(GeneralMessageConstants.USER_NOT_FOUND),
                         GeneralMessageConstants.USR_NOT_FOUND));
         validationService.verify(new ValidationRequest(request.getCode(), request.getEmail()));
-        user.setPassword(encodePassword(request.getPassword(), user.getEmail()));
+        user.setPassword(passwordUtil.encodePassword(request.getPassword(), user.getEmail()));
     }
 
 
@@ -245,26 +263,6 @@ public class UserServiceImpl implements UserService {
             throw new GuruException(HttpStatus.BAD_REQUEST, Translator.getMessage(GeneralMessageConstants.USER_FOUND),
                     GeneralMessageConstants.USR_FOUND);
         }
-    }
-
-    /**
-     * Encode user password for security
-     * Combine username, usernameid and security
-     *
-     * @param password password information
-     * @param userMail mail of user
-     * @return encoded password
-     **/
-    private synchronized String encodePassword(String password, String userMail) {
-        String concat = userMail.toLowerCase();
-        MessageDigest md = DigestUtils.getSha256Digest();
-        md.update(concat.getBytes(StandardCharsets.UTF_8));
-        byte[] bytes = md.digest(password.getBytes());
-        StringBuilder sb = new StringBuilder();
-        for (byte aByte : bytes) {
-            sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
     }
 
     private void nviCheck(User user) {

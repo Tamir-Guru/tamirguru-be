@@ -17,7 +17,6 @@ public class GeneralMessageConstants {
     public static final String WRONG_INFO = "error.wrong.info";
     public static final String USR_NOT_FOUND = "USER_NOT_FOUND";
     public static final String USR_FOUND = "USER_FOUND";
-    public static final String LINKED = "LINKED";
     public static final String WRONG_INFO_ERR = "WRONG_INFO";
 
 }

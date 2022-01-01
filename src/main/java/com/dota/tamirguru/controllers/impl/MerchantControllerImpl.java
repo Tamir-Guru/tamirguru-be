@@ -7,7 +7,6 @@
 package com.dota.tamirguru.controllers.impl;
 
 import com.dota.tamirguru.controllers.MerchantController;
-import com.dota.tamirguru.core.annotations.SkipSecurity;
 import com.dota.tamirguru.core.i18n.Translator;
 import com.dota.tamirguru.models.internals.merchant.MerchantTypeName;
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
@@ -42,7 +41,6 @@ public class MerchantControllerImpl implements MerchantController {
     }
 
     @Override
-    @SkipSecurity
     public ResponseEntity<List<MerchantResponse>> findMerchantsFromDistrictId(@Valid MerchantFilter merchantFilter, Integer pageNumber, Integer pageSize) {
         return ResponseEntity.ok(merchantService.getMerchantByDistrict(merchantFilter, PageRequest.of(pageNumber - 1, pageSize, Sort.by("name").ascending())));
     }

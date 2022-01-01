@@ -4,6 +4,7 @@ CREATE TABLE merchants
         constraint merchants_pk
             primary key,
     name           text        not null,
+    user_id        bigint      not null,
     phone_number   varchar(11) not null,
     merchant_types text[]      not null,
     address        text        not null,

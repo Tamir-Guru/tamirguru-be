@@ -7,7 +7,6 @@
 package com.dota.tamirguru.controllers.impl;
 
 import com.dota.tamirguru.controllers.UserController;
-import com.dota.tamirguru.core.annotations.SkipSecurity;
 import com.dota.tamirguru.models.requests.user.AuthRequest;
 import com.dota.tamirguru.models.requests.user.ChangePasswordRequest;
 import com.dota.tamirguru.models.requests.user.ResendVerificationMailRequest;
@@ -30,7 +29,6 @@ public class UserControllerImpl implements UserController {
     private UserService userService;
 
     @Override
-    @SkipSecurity
     public ResponseEntity<UserResponse> createUser(@Valid UserCreateRequest request) {
         return ResponseEntity.ok(userService.createUser(request));
     }

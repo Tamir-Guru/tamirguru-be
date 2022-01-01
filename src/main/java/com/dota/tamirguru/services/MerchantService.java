@@ -9,6 +9,7 @@ package com.dota.tamirguru.services;
 import com.dota.tamirguru.models.internals.merchant.MerchantTypeName;
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
 import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
+import com.dota.tamirguru.models.responses.merchant.MerchantFeatureResponse;
 import com.dota.tamirguru.models.responses.merchant.MerchantResponse;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +25,8 @@ public interface MerchantService {
     MerchantResponse saveMerchant(MerchantCreateRequest request);
 
     List<MerchantResponse> getMerchantByDistrict(MerchantFilter filter, Pageable pageable);
+
+    MerchantResponse findById(Long id);
+
+    Set<MerchantFeatureResponse> findFeaturesById(Long id);
 }

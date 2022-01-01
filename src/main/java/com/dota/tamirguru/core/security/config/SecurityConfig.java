@@ -6,15 +6,23 @@
  **/
 package com.dota.tamirguru.core.security.config;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import com.dota.tamirguru.core.security.jwt.JWTService;
+import com.dota.tamirguru.core.security.jwt.JWTUtil;
+import com.dota.tamirguru.core.utils.PasswordUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,21 +33,61 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 @EnableGlobalAuthentication
-@Order(SecurityProperties.BASIC_AUTH_ORDER)
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private JWTUtil util;
+
+    @Autowired
+    private PasswordUtil passwordUtil;
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/playground",
+                "/vendor/playground/**",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/index.html",
+                "/",
+                "/error",
+                "/error.html",
+                "/document.html",
+                "/document",
+                "/favicon.ico",
+                "/users/verifyEmail",
+                "/merchants/types",
+                "/login",
+                "/resendVerification",
+                "/cities",
+                "/districts",
+                "/countries",
+                "/resetPassword");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .authorizeRequests().antMatchers("/**").permitAll()
-                .anyRequest().authenticated();
-
-        http.sessionManagement()
+                .authorizeRequests().antMatchers("/graphql").permitAll()
+                .antMatchers(HttpMethod.GET, "/merchants").permitAll()
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .anyRequest().authenticated().and()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(new JwtFilter(jwtService, util), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() {
+        return new TamirGuruAuthManager(passwordUtil);
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(List.of("*"));

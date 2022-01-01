@@ -58,7 +58,7 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
     }
 
     private void filterByDistrict(MerchantFilter filter, List<String> conditions) {
-        if (!filter.getCities().isEmpty()) {
+        if (!filter.getDistricts().isEmpty()) {
             StringBuilder builder = new StringBuilder("mrc.district_id in (");
             String prefix = "";
             for (Long district : filter.getDistricts()) {

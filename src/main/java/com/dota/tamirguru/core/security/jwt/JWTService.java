@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -35,10 +34,9 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
 
 @Service
 public class JWTService {
@@ -108,9 +106,12 @@ public class JWTService {
      *
      * @return user data
      */
-    public Set<String> getUserRoles() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+    public List<SimpleGrantedAuthority> getUserRoles(User user) {
+        Set<String> roles = RoleUtil.getRole(user.getRole());
+
+        return Arrays.stream(roles.toArray(new String[0]))
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 
     /*
@@ -124,15 +125,13 @@ public class JWTService {
     }
 
     /*
-     * Checks if token valid. Checks token iformation on database
+     * Generates user authorities
      *
-     * @param token user token
-     * @return valid or not
+     * @param userDetails details
+     * @return spring object
      */
-    public boolean checkIsValid(String token) {
-        User user = findById(getIdFromToken(token));
-        Claims claims = getJwtToken(token);
-        return user != null && user.getEmail().equals(claims.get("username"));
+    public UsernamePasswordAuthenticationToken getAuthenticationToken(final User userDetails) {
+        return new UsernamePasswordAuthenticationToken(userDetails, "", getUserRoles(userDetails));
     }
 
     /*
@@ -163,24 +162,6 @@ public class JWTService {
         Claims claims = getJwtToken(token);
         LocalDateTime time = LocalDateTime.ofInstant(Instant.ofEpochMilli(claims.getExpiration().getTime()), TimeZone.getDefault().toZoneId());
         return time.isBefore(LocalDateTime.now());
-    }
-
-    /*
-     * Generates user authorities
-     *
-     * @param userDetails details
-     * @return spring object
-     */
-    public UsernamePasswordAuthenticationToken getAuthenticationToken(final User userDetails) {
-
-        Set<String> roles = RoleUtil.getRole(userDetails.getRole());
-
-        final Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(roles.toArray(new String[0]))
-                        .map(SimpleGrantedAuthority::new)
-                        .toList();
-
-        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
     /*

@@ -2,7 +2,7 @@
  * @author : Oguz Kahraman
  * @since : 22.02.2021
  *
- * Copyright - Collige Java API
+ * Copyright - Tamir Guru Java API
  **/
 package com.dota.tamirguru.services.impl;
 

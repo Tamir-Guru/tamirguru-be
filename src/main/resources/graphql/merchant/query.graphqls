@@ -1,0 +1,10 @@
+extend type Query {
+    merchants(filter: MerchantFilter, pageNumber: Int!, pageSize: Int!): [Merchant]!
+    merchantDetails(id: ID!): Merchant!
+    merchantFeatureDetails(id: ID!): [MerchantFeature]!
+}
+
+schema {
+    query: Query,
+    mutation: Mutation
+}

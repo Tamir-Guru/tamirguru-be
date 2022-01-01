@@ -1,0 +1,12 @@
+extend type Query {
+    userDetails: User!
+}
+
+extend type Mutation {
+    createUser(request: UserCreateRequest): User
+}
+
+schema {
+    query: Query,
+    mutation: Mutation
+}
