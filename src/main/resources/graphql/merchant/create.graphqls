@@ -1,0 +1,19 @@
+input FeatureSet {
+    feature: String!
+    values: [ID]!
+}
+
+input MerchantFeatureRequest {
+    featureSet: [FeatureSet]!
+    merchantTypes: String!
+}
+
+input MerchantCreateRequest {
+    districtId: ID!
+    fullAddress: String!
+    latitude: Float!
+    longitude: Float!
+    merchantFeatures: [MerchantFeatureRequest]!
+    merchantName: String!
+    phoneNumber: String!
+}

@@ -4,7 +4,6 @@ extend type Query {
     merchantFeatureDetails(id: ID!): [MerchantFeature]!
 }
 
-schema {
-    query: Query,
-    mutation: Mutation
+extend type Mutation {
+    createMerchant(request: MerchantCreateRequest!): Merchant!
 }

@@ -5,8 +5,3 @@ extend type Query {
 extend type Mutation {
     createUser(request: UserCreateRequest): User
 }
-
-schema {
-    query: Query,
-    mutation: Mutation
-}

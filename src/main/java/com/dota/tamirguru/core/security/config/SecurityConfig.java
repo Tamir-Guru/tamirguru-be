@@ -8,13 +8,11 @@ package com.dota.tamirguru.core.security.config;
 
 import com.dota.tamirguru.core.security.jwt.JWTService;
 import com.dota.tamirguru.core.security.jwt.JWTUtil;
-import com.dota.tamirguru.core.utils.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,7 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JWTUtil util;
 
     @Autowired
-    private PasswordUtil passwordUtil;
+    private TamirGuruAuthProvider authProvider;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authProvider);
+    }
 
     @Override
     public void configure(WebSecurity web) {
@@ -78,12 +81,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(new JwtFilter(jwtService, util), UsernamePasswordAuthenticationFilter.class);
-    }
-
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() {
-        return new TamirGuruAuthManager(passwordUtil);
     }
 
     @Bean

@@ -10,6 +10,7 @@ import annotations.com.dota.tamirguru.nvi.KPSPublic;
 import com.dota.tamirguru.constants.GeneralMessageConstants;
 import com.dota.tamirguru.core.exception.GuruException;
 import com.dota.tamirguru.core.i18n.Translator;
+import com.dota.tamirguru.core.security.config.TamirGuruAuthProvider;
 import com.dota.tamirguru.core.security.jwt.JWTService;
 import com.dota.tamirguru.core.utils.PasswordUtil;
 import com.dota.tamirguru.entitites.User;
@@ -34,7 +35,6 @@ import com.dota.tamirguru.services.UserService;
 import com.dota.tamirguru.services.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     private ValidationService validationService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private TamirGuruAuthProvider authProvider;
 
     @Autowired
     private PasswordUtil passwordUtil;
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(authRequest.getUsername().toLowerCase())
                 .orElseThrow(() -> new GuruException(HttpStatus.FORBIDDEN, Translator.getMessage(GeneralMessageConstants.WRONG_INFO),
                         GeneralMessageConstants.WRONG_INFO_ERR));
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user, authRequest.getPassword(), jwtService.getUserRoles(user)));
+        authProvider.authenticate(new UsernamePasswordAuthenticationToken(user, authRequest.getPassword(), jwtService.getUserRoles(user)));
         UserResponse userResponse = userMapper.mapToModel(user);
         userResponse.setToken(jwtService.createToken(user));
         return userResponse;
