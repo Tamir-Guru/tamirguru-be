@@ -53,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 "/altair/**",
                 "/vendor/altair/**",
+                "/voyager/**",
+                "/vendor/voyager/**",
                 "/swagger-ui/**",
                 "/v3/api-docs/**",
                 "/index.html",
