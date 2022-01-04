@@ -4,7 +4,7 @@
  *
  * Copyright - TamirGuru
  */
-package com.dota.tamirguru.controllers.graphql;
+package com.dota.tamirguru.resolvers;
 
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
 import com.dota.tamirguru.models.responses.merchant.MerchantResponse;
@@ -24,7 +24,7 @@ public class MerchantMutationResolver implements GraphQLMutationResolver {
     @Autowired
     private MerchantService merchantService;
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_COMMERCIAL')")
     public MerchantResponse createMerchant(@Valid MerchantCreateRequest request) {
         return merchantService.saveMerchant(request);
     }

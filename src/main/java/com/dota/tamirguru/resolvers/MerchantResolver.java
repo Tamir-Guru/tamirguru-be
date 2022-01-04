@@ -4,7 +4,7 @@
  *
  * Copyright - TamirGuru
  */
-package com.dota.tamirguru.controllers.graphql;
+package com.dota.tamirguru.resolvers;
 
 import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
 import com.dota.tamirguru.models.responses.merchant.MerchantFeatureResponse;

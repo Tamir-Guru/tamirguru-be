@@ -1,0 +1,5 @@
+extend type Query {
+    countries: [Country]!
+    cities(countryCode: String!):[City]!
+    districts(cityId: String!):[District]!
+}

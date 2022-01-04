@@ -6,7 +6,6 @@
  **/
 package com.dota.tamirguru.models.requests.user;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,11 +21,9 @@ public class ValidationRequest {
 
     @NotNull
     @Length(min = 50, max = 50)
-    @Schema(description = "Validation code", example = "000000", required = true)
     private String code;
 
     @Email
-    @Schema(description = "Mail Address", example = "test@test.com", required = true)
     private String mail;
 
 }

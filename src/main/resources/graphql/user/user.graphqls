@@ -9,7 +9,7 @@ type User {
     verified: Boolean
 }
 
-input UserCreateRequest {
+input UserCreate {
     birthdate: Date!
     email: String!
     name: String!
@@ -17,4 +17,11 @@ input UserCreateRequest {
     role: Role!
     surname: String!
     tckn: String
+}
+
+input UserUpdate {
+    email: String!
+    name: String!
+    picture: String!
+    timeZone: String!
 }

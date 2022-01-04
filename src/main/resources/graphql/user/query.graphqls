@@ -1,7 +1,13 @@
 extend type Query {
     userDetails: User!
+    login(request: Auth!): User!
 }
 
 extend type Mutation {
-    createUser(request: UserCreateRequest): User
+    createUser(request: UserCreate!): User!
+    changePassword(request: ChangePassword!): Boolean!
+    resetPasswordMail(request: ResetPasswordMail!): Boolean!
+    resetPassword(request: ResetPassword!): Boolean!
+    resendVerification(request: ResendVerificationMail!): Boolean!
+    updateUser(request: UserUpdate!): User!
 }

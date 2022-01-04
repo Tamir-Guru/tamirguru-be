@@ -28,7 +28,6 @@
             src/main/java/com/dota/tamirguru/CalendarApplication**
         </sonar.exclusions>
         <hibernate-types.version>2.14.0</hibernate-types.version>
-        <openapi.version>1.6.3</openapi.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <jjwt.version>0.11.2</jjwt.version>
         <commons-text.version>1.9</commons-text.version>
@@ -117,11 +116,6 @@
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
             <version>${hibernate-types.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>${openapi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

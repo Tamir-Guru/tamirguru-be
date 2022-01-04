@@ -1,0 +1,4 @@
+input Validation {
+    code: String!
+    mail: String!
+}

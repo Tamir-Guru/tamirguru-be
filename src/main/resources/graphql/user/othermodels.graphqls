@@ -1,0 +1,21 @@
+input ChangePassword {
+    newPassword: String!
+    oldPassword: String!
+}
+
+input ResetPasswordMail {
+    email: String!
+}
+
+input ResetPassword {
+    code: String!
+    email: String!
+    password: String!
+}
+
+input ResendVerificationMail {
+    email: String!
+    type: String!
+}
+
+

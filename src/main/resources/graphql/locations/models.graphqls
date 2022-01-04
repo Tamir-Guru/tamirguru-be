@@ -1,0 +1,16 @@
+type Country {
+    code: String!
+    name: String!
+    phoneCode: String!
+}
+
+type City {
+    code: String!
+    name: String!
+}
+
+type District {
+    code: String!
+    name: String!
+}
+
