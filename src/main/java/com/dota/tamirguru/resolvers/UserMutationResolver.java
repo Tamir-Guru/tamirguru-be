@@ -20,6 +20,7 @@ import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -39,10 +40,12 @@ public class UserMutationResolver implements GraphQLMutationResolver {
         return userService.createUser(request);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public UserResponse updateUser(@Valid UserUpdateRequest request) {
         return userService.updateUser(request);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public Boolean changePassword(@Valid ChangePasswordRequest request) {
         userService.changePassword(request);
         return true;

@@ -27,5 +27,4 @@ public class ValidationResolver implements GraphQLQueryResolver {
         return true;
     }
 
-
 }

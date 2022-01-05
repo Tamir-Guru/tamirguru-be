@@ -55,29 +55,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/vendor/altair/**",
                 "/voyager/**",
                 "/vendor/voyager/**",
-                "/swagger-ui/**",
-                "/v3/api-docs/**",
-                "/index.html",
                 "/",
                 "/error",
-                "/error.html",
-                "/document.html",
-                "/document",
-                "/favicon.ico",
-                "/users/verifyEmail",
-                "/merchants/types",
-                "/login",
-                "/resendVerification",
-                "/cities",
-                "/districts",
-                "/countries",
-                "/resetPassword");
+                "/error.html"
+        );
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .authorizeRequests().antMatchers("/graphql").permitAll()
+                .authorizeRequests().antMatchers("/graphql", "/subscriptions").permitAll()
                 .antMatchers(HttpMethod.GET, "/merchants").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated().and()
