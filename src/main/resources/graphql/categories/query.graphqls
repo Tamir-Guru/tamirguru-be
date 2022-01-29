@@ -1,0 +1,5 @@
+extend type Query {
+    parentCategories: [MerchantTypeName]!
+    categoryFromParentId(parentId: ID!): [MerchantTypeName]!
+    allCategories: [MerchantTypeName]!
+}

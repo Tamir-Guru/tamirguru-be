@@ -17,8 +17,16 @@ import java.util.Set;
 @Repository
 public interface MerchantTypeRepository extends CrudRepository<MerchantType, Long> {
 
-    @Query("select mt.typeId from MerchantType mt")
+    @Query("select mt from MerchantType mt")
     @Cacheable(cacheNames = "allMerchantTypes")
-    Set<String> findTypes();
+    Set<MerchantType> findTypes();
+
+    @Query("select mt from MerchantType mt where mt.parentId is null")
+    @Cacheable(cacheNames = "parentCategories")
+    Set<MerchantType> findParentCategories();
+
+    @Query("select mt from MerchantType mt where mt.parentId =:parentId")
+    @Cacheable(cacheNames = "childCategories")
+    Set<MerchantType> findChildCategories(Long parentId);
 
 }

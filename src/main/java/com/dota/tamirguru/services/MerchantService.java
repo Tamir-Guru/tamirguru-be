@@ -6,7 +6,6 @@
  */
 package com.dota.tamirguru.services;
 
-import com.dota.tamirguru.models.internals.merchant.MerchantTypeName;
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
 import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
 import com.dota.tamirguru.models.responses.merchant.MerchantFeatureResponse;
@@ -17,8 +16,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface MerchantService {
-
-    List<MerchantTypeName> getMerchants(String language);
 
     Set<String> getMerchantMap();
 

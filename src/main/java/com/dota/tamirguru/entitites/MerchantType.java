@@ -24,5 +24,6 @@ public class MerchantType extends BaseEntity {
     private String name;
     private String language;
     private String typeId;
+    private Long parentId;
 
 }

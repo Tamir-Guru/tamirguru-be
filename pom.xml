@@ -15,18 +15,6 @@
     <description>Tamir Guru Project REST API Application Deployment</description>
     <properties>
         <java.version>17</java.version>
-        <jacoco.version>0.8.7</jacoco.version>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/**/target/site/**/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.language>java</sonar.language>
-        <sonar.exclusions>
-            src/main/java/com/dota/tamirguru/models/**,
-            src/main/java/com/dota/tamirguru/entitites/**,
-            src/main/java/com/dota/tamirguru/core/**,
-            src/main/java/com/dota/tamirguru/CalendarApplication**
-        </sonar.exclusions>
         <hibernate-types.version>2.14.0</hibernate-types.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <jjwt.version>0.11.2</jjwt.version>
@@ -68,11 +56,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -170,26 +153,6 @@
                         </exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <executions>
-                    <execution>
-                        <id>jacoco-initialize</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>com.heroku.sdk</groupId>

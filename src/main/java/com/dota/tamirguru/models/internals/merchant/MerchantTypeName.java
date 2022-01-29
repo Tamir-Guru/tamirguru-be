@@ -15,6 +15,8 @@ public class MerchantTypeName {
 
     private String name;
     private String typeId;
+    private Long parentId;
+    private Long id;
 
 }
 

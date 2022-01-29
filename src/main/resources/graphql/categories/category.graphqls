@@ -1,0 +1,6 @@
+type MerchantTypeName {
+    name: String!
+    typeId: String!
+    parentId: ID
+    id: ID!
+}

@@ -6,14 +6,12 @@
  */
 package com.dota.tamirguru.services.impl;
 
-import com.dota.tamirguru.constants.LocationConstant;
 import com.dota.tamirguru.core.exception.GuruException;
-import com.dota.tamirguru.core.i18n.Translator;
 import com.dota.tamirguru.core.security.jwt.JWTService;
 import com.dota.tamirguru.entitites.Merchant;
+import com.dota.tamirguru.entitites.MerchantType;
 import com.dota.tamirguru.entitites.User;
 import com.dota.tamirguru.mappers.MerchantMapper;
-import com.dota.tamirguru.models.internals.merchant.MerchantTypeName;
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
 import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
 import com.dota.tamirguru.models.responses.merchant.MerchantFeatureResponse;
@@ -33,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MerchantServiceImpl implements MerchantService {
@@ -56,19 +55,9 @@ public class MerchantServiceImpl implements MerchantService {
     private MerchantMapper merchantMapper;
 
     @Override
-    @Cacheable(cacheNames = "merchantType")
-    public List<MerchantTypeName> getMerchants(String language) {
-        List<MerchantTypeName> merchantTypeNames = new ArrayList<>();
-        Set<String> allTypes = merchantTypeRepository.findTypes();
-        allTypes.forEach(item -> merchantTypeNames
-                .add(new MerchantTypeName(Translator.getMessage(LocationConstant.MERCHANT_PREFIX + item), item)));
-        return merchantTypeNames;
-    }
-
-    @Override
     @Cacheable(cacheNames = "merchantTypeMap")
     public Set<String> getMerchantMap() {
-        return merchantTypeRepository.findTypes();
+        return merchantTypeRepository.findTypes().stream().map(MerchantType::getTypeId).collect(Collectors.toSet());
     }
 
     @Override
