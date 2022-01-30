@@ -1,19 +1,17 @@
 /*
  * @author : Oguz Kahraman
- * @since : 25 Ara 2021
+ * @since : 30 Oca 2022
  *
  * Copyright - TamirGuru
  */
 package com.dota.tamirguru.services;
 
-import com.dota.tamirguru.enums.Feature;
+import com.dota.tamirguru.entitites.Feature;
 
-import javax.annotation.PostConstruct;
-import java.util.Set;
+import java.util.Map;
 
 public interface MerchantFeatureService {
-    @PostConstruct
-    void init();
+    Map<String, Feature> getFeatures();
 
-    boolean existsByIds(Feature feature, Set<Long> ids);
+    Feature getFeature(String featureName);
 }

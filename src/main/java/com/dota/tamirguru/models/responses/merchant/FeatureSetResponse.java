@@ -6,7 +6,6 @@
  */
 package com.dota.tamirguru.models.responses.merchant;
 
-import com.dota.tamirguru.enums.Feature;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -15,7 +14,7 @@ import java.util.Set;
 @Data
 public class FeatureSetResponse {
 
-    private Feature feature;
+    private String feature;
     private Set<FeatureValue> values = new HashSet<>();
 
 }

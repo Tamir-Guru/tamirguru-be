@@ -5,7 +5,7 @@ input FeatureSet {
 
 input MerchantFeatureRequest {
     featureSet: [FeatureSet]!
-    merchantTypes: String!
+    merchantTypes: ID!
 }
 
 input MerchantCreateRequest {

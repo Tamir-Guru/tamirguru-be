@@ -1,7 +1,6 @@
 package com.dota.tamirguru.repositories;
 
 import com.dota.tamirguru.entitites.Merchant;
-import com.dota.tamirguru.enums.Feature;
 import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
 import org.springframework.data.domain.Pageable;
 
@@ -75,10 +74,10 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
         if (!filter.getFeatures().isEmpty()) {
             StringBuilder builder = new StringBuilder("merchant_features_1_.type in (");
             String prefix = "";
-            for (Feature feature : filter.getFeatures()) {
+            for (String feature : filter.getFeatures()) {
                 builder.append(prefix);
                 prefix = ",";
-                builder.append('\'').append(feature.name()).append('\'');
+                builder.append('\'').append(feature).append('\'');
             }
             builder.append(")");
             conditions.add(builder.toString());

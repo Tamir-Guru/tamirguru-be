@@ -1,61 +1,45 @@
 /*
  * @author : Oguz Kahraman
- * @since : 25 Ara 2021
+ * @since : 30 Oca 2022
  *
  * Copyright - TamirGuru
  */
 package com.dota.tamirguru.services.impl;
 
-import com.dota.tamirguru.enums.Feature;
+import com.dota.tamirguru.core.exception.GuruException;
+import com.dota.tamirguru.entitites.Feature;
+import com.dota.tamirguru.repositories.FeatureRepository;
 import com.dota.tamirguru.services.MerchantFeatureService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
-@SuppressWarnings("java:S2259")
 public class MerchantFeatureServiceImpl implements MerchantFeatureService {
 
-    private static final String QUERY = "SELECT id from %s";
-
     @Autowired
-    private CacheManager cacheManager;
+    private FeatureRepository featureRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @PostConstruct
     @Override
-    public void init() {
-        for (Feature feature : Feature.values()) {
-            Query q = entityManager.createNativeQuery(String.format(QUERY, feature.getTableName()));
-            List<BigInteger> results = q.getResultList();
-            cacheManager.getCache(feature.getCacheName()).putIfAbsent("", results.stream().map(BigInteger::longValue).collect(Collectors.toSet()));
-        }
+    @Cacheable("allFeatures")
+    public Map<String, Feature> getFeatures() {
+        Iterable<Feature> featureIterator = featureRepository.findAll();
+        Stream<Feature> featureStream = StreamSupport.stream(featureIterator.spliterator(), false);
+        return featureStream.collect(Collectors.toMap(Feature::getName, Function.identity()));
     }
 
     @Override
-    public boolean existsByIds(Feature feature, Set<Long> ids) {
-        if (cacheManager.getCache(feature.getCacheName()) != null) {
-            Cache cache = cacheManager.getCache(feature.getCacheName());
-            Set<Long> longSet = cache.get("", Set.class);
-            if (longSet != null) {
-                return longSet.containsAll(ids);
-            }
-            return false;
-        }
-        return false;
+    @Cacheable("feature")
+    public Feature getFeature(String featureName) {
+        return featureRepository.findById(featureName).orElseThrow(() ->
+                new GuruException(HttpStatus.BAD_REQUEST, "Feature couldn't find", "FTR_ERR"));
     }
-
 
 }

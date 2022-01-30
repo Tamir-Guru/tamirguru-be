@@ -6,7 +6,6 @@
  */
 package com.dota.tamirguru.models.requests.merchant;
 
-import com.dota.tamirguru.enums.Feature;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -17,7 +16,7 @@ import java.util.Set;
 public class FeatureSet {
 
     @NotNull
-    private Feature feature;
+    private String feature;
 
     @NotEmpty
     private Set<Long> values;

@@ -6,7 +6,6 @@
  **/
 package com.dota.tamirguru.entitites;
 
-import com.dota.tamirguru.enums.Feature;
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,8 +14,6 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -32,8 +29,7 @@ public class MerchantFeature extends BaseEntity {
     @Type(type = "list-array")
     private List<Long> values;
     private String typeId;
-    @Enumerated(EnumType.STRING)
-    private Feature type;
+    private String type;
 
 }
 

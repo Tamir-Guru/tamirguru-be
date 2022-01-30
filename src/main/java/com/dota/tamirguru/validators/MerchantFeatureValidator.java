@@ -6,14 +6,17 @@
  */
 package com.dota.tamirguru.validators;
 
+import com.dota.tamirguru.entitites.Feature;
 import com.dota.tamirguru.models.requests.merchant.FeatureSet;
 import com.dota.tamirguru.models.requests.merchant.MerchantFeatureRequest;
+import com.dota.tamirguru.services.BrandService;
 import com.dota.tamirguru.services.MerchantFeatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Arrays;
 import java.util.Iterator;
 
 @Component
@@ -22,6 +25,9 @@ public class MerchantFeatureValidator implements ConstraintValidator<MerchantFea
     @Autowired
     private MerchantFeatureService featureService;
 
+    @Autowired
+    private BrandService brandService;
+
     @Override
     public boolean isValid(MerchantFeatureRequest request, ConstraintValidatorContext context) {
         if (request.getFeatureSet() != null && !request.getFeatureSet().isEmpty()) {
@@ -29,8 +35,14 @@ public class MerchantFeatureValidator implements ConstraintValidator<MerchantFea
             boolean isError = false;
             while (iterable.hasNext() && !isError) {
                 FeatureSet feature = iterable.next();
-                isError = !(feature.getFeature().contains(request.getMerchantTypes()) &&
-                        featureService.existsByIds(feature.getFeature(), feature.getValues()));
+                Feature feature1 = featureService.getFeatures().get(feature.getFeature());
+                isError = !(feature1 != null && Arrays.asList(feature1.getCategoryIds()).contains(request.getMerchantTypes()) &&
+                        brandService.getFeatureBrands(feature.getFeature()).containsAll(feature.getValues()));
+            }
+            if (isError) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate("Feature not found for given type")
+                        .addPropertyNode("featureSet").addConstraintViolation();
             }
             return !isError;
         }
