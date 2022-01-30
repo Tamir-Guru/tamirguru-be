@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
 
-    private static final String QUERY = "SELECT * from merchants mrc " +
+    private static final String QUERY = "SELECT DISTINCT mrc.* from merchants mrc " +
             " left outer join districts district0_ on mrc.district_id = district0_.id" +
             " left outer join cities city1_ on district0_.city_id = city1_.city_code" +
             " left outer join merchant_features merchant_features_1_ on merchant_features_1_.merchant_id = mrc.id ";
