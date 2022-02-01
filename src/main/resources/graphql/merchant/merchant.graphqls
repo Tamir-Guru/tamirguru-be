@@ -4,6 +4,7 @@ type Merchant {
     id: ID
     phoneNumber: String
     fullAddress: String
+    website: String
     countryPhoneCode: String
     countryName: String
     cityName: String

@@ -29,6 +29,8 @@ public class MerchantCreateRequest {
     @Email
     private String email;
 
+    private String website;
+
     @NotNull
     private Set<@Valid MerchantFeatureRequest> merchantFeatures;
 

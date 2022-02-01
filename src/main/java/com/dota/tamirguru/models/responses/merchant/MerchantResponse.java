@@ -16,6 +16,7 @@ public class MerchantResponse {
 
     private Long id;
     private String merchantName;
+    private String website;
     private String email;
     private String phoneNumber;
     private String fullAddress;

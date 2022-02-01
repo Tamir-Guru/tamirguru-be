@@ -11,7 +11,8 @@ input MerchantFeatureRequest {
 input MerchantCreateRequest {
     districtId: ID!
     fullAddress: String!
-    email: String!
+    email: String
+    website: String
     latitude: Float!
     longitude: Float!
     merchantFeatures: [MerchantFeatureRequest]!
