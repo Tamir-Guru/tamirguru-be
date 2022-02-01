@@ -85,7 +85,7 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
     }
 
     private void filterByFeatureValues(MerchantFilter filter, List<String> conditions) {
-        if (filter.getFeatures() != null && !filter.getFeatures().isEmpty()) {
+        if (filter.getValues() != null && !filter.getValues().isEmpty()) {
             StringBuilder builder = new StringBuilder("ARRAY[");
             genericNumberIn(builder, filter.getValues());
             builder.append("] && merchant_features_1_.values");
