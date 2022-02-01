@@ -33,6 +33,7 @@ public class Merchant extends BaseEntity {
 
     private String name;
     private String phoneNumber;
+    private String email;
 
     @Type(type = "string-array")
     private String[] merchantTypes;

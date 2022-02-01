@@ -1,5 +1,7 @@
 type Merchant {
     merchantName: String
+    email: String
+    id: ID
     phoneNumber: String
     fullAddress: String
     countryPhoneCode: String

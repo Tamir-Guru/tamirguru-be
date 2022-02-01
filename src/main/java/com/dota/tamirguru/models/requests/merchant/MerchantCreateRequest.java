@@ -11,6 +11,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -24,6 +25,9 @@ public class MerchantCreateRequest {
     @NotBlank
     @Length(min = 9, max = 11)
     private String phoneNumber;
+
+    @Email
+    private String email;
 
     @NotNull
     private Set<@Valid MerchantFeatureRequest> merchantFeatures;

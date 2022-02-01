@@ -14,7 +14,9 @@ import java.util.Set;
 @Data
 public class MerchantResponse {
 
+    private Long id;
     private String merchantName;
+    private String email;
     private String phoneNumber;
     private String fullAddress;
     private String countryPhoneCode;

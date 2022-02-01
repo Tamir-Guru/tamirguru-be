@@ -1,0 +1,2 @@
+ALTER TABLE merchants
+    ADD COLUMN email VARCHAR(255);
