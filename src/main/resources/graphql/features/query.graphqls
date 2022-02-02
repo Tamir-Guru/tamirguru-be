@@ -1,0 +1,8 @@
+extend type Query {
+    featuresByCategory(category: String!): [FeatureResponse]!
+}
+
+type FeatureResponse {
+    name: String!
+    description: String!
+}
