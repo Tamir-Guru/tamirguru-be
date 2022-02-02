@@ -30,4 +30,6 @@ public class MerchantFilter {
 
     private Set<Long> values;
 
+    private DistanceFilter distance;
+
 }

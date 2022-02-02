@@ -1,3 +1,5 @@
+scalar Long
+
 type Merchant {
     merchantName: String
     email: String
@@ -21,6 +23,13 @@ input MerchantFilter {
     districts: [Int]
     cities: [String]
     values: [Int]
+    distance: Distance
+}
+
+input Distance {
+    longitude: Float!
+    latitude: Float!
+    distance: Long!
 }
 
 type Feature {

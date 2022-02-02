@@ -13,10 +13,17 @@ import java.util.Set;
 
 public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
 
-    private static final String QUERY = "SELECT DISTINCT mrc.* from merchants mrc " +
+    private static final String QUERY_START1 = "SELECT DISTINCT mrc.* from (select mrc.* ";
+    private static final String QUERY_START2 = "from merchants mrc " +
             " left outer join districts district0_ on mrc.district_id = district0_.id" +
             " left outer join cities city1_ on district0_.city_id = city1_.city_code" +
             " left outer join merchant_features merchant_features_1_ on merchant_features_1_.merchant_id = mrc.id ";
+    private static final String QUERY_END = ") mrc ";
+    private static final String DISTANCE_FILTER = "where mrc.distance < %d order by mrc.distance ";
+
+    private static final String DISTANCE_QUERY = ", (3959 *" +
+            " acos(cos(radians(%f)) * cos(radians(latitude)) * cos(radians(longitude) - radians(%f)) +" +
+            " sin(radians(%f)) * sin(radians(latitude)))) * 1.609344 AS distance ";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -24,8 +31,10 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
 
     @Override
     public List<Merchant> filter(MerchantFilter filter, Pageable pageable) {
-        StringBuilder str = new StringBuilder(QUERY);
+        StringBuilder str = new StringBuilder(QUERY_START1);
         List<String> conditions = new ArrayList<>();
+        boolean isDitance = filterByDistance(filter, str);
+        str.append(QUERY_START2);
         if (filter != null) {
             filterByType(filter, conditions);
             filterByCity(filter, conditions);
@@ -33,9 +42,23 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
             filterByFeatures(filter, conditions);
             filterByFeatureValues(filter, conditions);
         }
-        createQueryAndPagination(pageable, str, conditions);
+        createQuery(str, conditions);
+        str.append(QUERY_END);
+        if (isDitance) {
+            str.append(String.format(DISTANCE_FILTER, filter.getDistance().getDistance()));
+        }
+        createPagination(pageable, str);
         Query q = entityManager.createNativeQuery(str.toString(), Merchant.class);
         return q.getResultList();
+    }
+
+    private boolean filterByDistance(MerchantFilter filter, StringBuilder str) {
+        if (filter != null && filter.getDistance() != null) {
+            str.append(String.format(DISTANCE_QUERY, filter.getDistance().getLatitude(), filter.getDistance().getLongitude(),
+                    filter.getDistance().getLatitude()));
+            return true;
+        }
+        return false;
     }
 
     private void filterByType(MerchantFilter filter, List<String> conditions) {
@@ -93,7 +116,7 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
         }
     }
 
-    private void createQueryAndPagination(Pageable pageable, StringBuilder str, List<String> conditions) {
+    private void createQuery(StringBuilder str, List<String> conditions) {
         if (!conditions.isEmpty()) {
             str.append("where ");
             for (int i = 0; i < conditions.size(); i++) {
@@ -103,7 +126,10 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
                 }
             }
         }
-        str.append(" limit ").append(pageable.getPageSize()).append(" offset ").append(pageable.getPageNumber() * pageable.getPageSize());
+    }
+
+    private void createPagination(Pageable pageable, StringBuilder str) {
+        str.append(" limit ").append(pageable.getPageSize()).append(" offset ").append(pageable.getPageNumber() * pageable.getPageSize()).append(";");
     }
 
     private void genericStringIn(StringBuilder builder, Set<String> types) {
