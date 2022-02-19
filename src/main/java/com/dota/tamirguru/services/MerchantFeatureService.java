@@ -8,7 +8,6 @@ package com.dota.tamirguru.services;
 
 import com.dota.tamirguru.entitites.Feature;
 import com.dota.tamirguru.models.responses.features.FeatureResponse;
-import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +17,5 @@ public interface MerchantFeatureService {
 
     Feature getFeature(String featureName);
 
-    @Cacheable("featureDetails")
-    List<FeatureResponse> getFeaturesByCategory(String category);
+    List<FeatureResponse> getFeaturesByCategory(String category, String language);
 }

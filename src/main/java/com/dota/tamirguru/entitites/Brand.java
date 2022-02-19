@@ -22,5 +22,6 @@ public class Brand extends BaseEntity {
 
     private String name;
     private String featureType;
+    private String location;
 
 }

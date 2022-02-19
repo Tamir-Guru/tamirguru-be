@@ -11,6 +11,7 @@ import com.dota.tamirguru.core.i18n.Translator;
 import com.dota.tamirguru.entitites.Feature;
 import com.dota.tamirguru.models.responses.features.FeatureResponse;
 import com.dota.tamirguru.repositories.FeatureRepository;
+import com.dota.tamirguru.services.BrandService;
 import com.dota.tamirguru.services.MerchantFeatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -31,6 +32,9 @@ public class MerchantFeatureServiceImpl implements MerchantFeatureService {
     @Autowired
     private FeatureRepository featureRepository;
 
+    @Autowired
+    private BrandService brandService;
+
     @Override
     @Cacheable("allFeatures")
     public Map<String, Feature> getFeatures() {
@@ -48,13 +52,14 @@ public class MerchantFeatureServiceImpl implements MerchantFeatureService {
 
     @Override
     @Cacheable("featureDetails")
-    public List<FeatureResponse> getFeaturesByCategory(String category) {
+    public List<FeatureResponse> getFeaturesByCategory(String category, String language) {
         List<FeatureResponse> featureResponseList = new ArrayList<>();
         List<Feature> features = featureRepository.getFeaturesFromType(category);
         for (Feature feature : features) {
             FeatureResponse featureResponse = new FeatureResponse();
             featureResponse.setName(feature.getName());
             featureResponse.setDescription(Translator.getMessage("label.feature." + feature.getCacheName()));
+            featureResponse.setBrandDetails(brandService.getBrandDetails(feature.getName()));
             featureResponseList.add(featureResponse);
         }
         return featureResponseList;

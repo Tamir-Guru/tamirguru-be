@@ -1,8 +1,15 @@
 extend type Query {
     featuresByCategory(category: String!): [FeatureResponse]!
+    brandDetails(featureId: String!): [BrandDetails]!
 }
 
 type FeatureResponse {
     name: String!
     description: String!
+    brandDetails: [BrandDetails]!
+}
+
+type BrandDetails {
+    brandName: String!
+    brandDescription: String!
 }
