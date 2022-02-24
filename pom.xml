@@ -142,7 +142,7 @@
         <dependency>
             <groupId>com.hero</groupId>
             <artifactId>graphqldoc</artifactId>
-            <version>0.0.5-SNAPSHOT</version>
+            <version>0.0.6-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
