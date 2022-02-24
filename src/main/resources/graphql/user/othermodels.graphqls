@@ -15,7 +15,11 @@ input ResetPassword {
 
 input ResendVerificationMail {
     email: String!
-    type: String!
+    type: EmailType!
 }
 
+enum EmailType {
+    PASSWORD,
+    EMAIL
+}
 

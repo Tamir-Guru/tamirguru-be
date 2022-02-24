@@ -52,9 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
                 "/altair/**",
-                "/vendor/altair/**",
+                "/vendor/**",
+                "/assets/**",
                 "/voyager/**",
-                "/vendor/voyager/**",
+                "/document",
                 "/",
                 "/error",
                 "/error.html"

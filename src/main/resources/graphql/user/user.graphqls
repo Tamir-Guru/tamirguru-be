@@ -23,5 +23,4 @@ input UserUpdate {
     email: String!
     name: String!
     picture: String!
-    timeZone: String!
 }

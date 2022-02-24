@@ -22,6 +22,7 @@ input MerchantFilter {
     types: [String]
     districts: [Int]
     cities: [String]
+    features: [String]
     values: [Int]
     distance: Distance
 }
