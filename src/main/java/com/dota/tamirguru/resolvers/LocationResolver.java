@@ -38,7 +38,7 @@ public class LocationResolver implements GraphQLQueryResolver {
     }
 
     @GraphQLDocDetail(operation = "Get cities of city", description = "This endpoint returns districts details by city code")
-    public List<DistrictResponse> getDistricts(String cityId) {
+    public List<DistrictResponse> getDistricts(@ParameterType(example = "1") String cityId) {
         return locationService.getDistricts(Translator.getDefaultLanguageUpper(), cityId);
     }
 
