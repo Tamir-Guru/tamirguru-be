@@ -145,9 +145,9 @@
             <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>com.hero</groupId>
+            <groupId>com.tamirguru</groupId>
             <artifactId>graphqldoc</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
@@ -229,18 +229,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>ogzkhrmn-tamirguru</id>
-            <url>https://packagecloud.io/ogzkhrmn/tamirguru/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
 </project>
