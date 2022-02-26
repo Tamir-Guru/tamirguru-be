@@ -6,6 +6,7 @@ type Merchant {
     email: String
     details: String
     id: ID
+    createDate: Date
     phoneNumber: String
     fullAddress: String
     website: String

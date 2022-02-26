@@ -15,6 +15,10 @@ public class UserUpdateRequest {
     @SchemaType(example = "Example", description = "Name of user")
     private String name;
 
+    @NotBlank
+    @SchemaType(example = "Example", description = "Surname of user")
+    private String surname;
+
     @Email(message = "{email.not.valid}")
     @SchemaType(example = "example@example.com", description = "Mail of user")
     private String email;

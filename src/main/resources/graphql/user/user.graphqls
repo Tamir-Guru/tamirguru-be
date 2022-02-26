@@ -9,6 +9,7 @@ type User {
     photo: String
     token: String
     verified: Boolean
+    createDate: Date
 }
 
 input UserCreate {
@@ -24,4 +25,5 @@ input UserCreate {
 input UserUpdate {
     email: String!
     name: String!
+    surname: String!
 }

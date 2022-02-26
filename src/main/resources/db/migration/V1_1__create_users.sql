@@ -1,17 +1,18 @@
 create table users
 (
-    id        bigserial    not null
+    id          bigserial    not null
         constraint users_pk
             primary key,
-    name      varchar(100) not null,
-    surname   varchar(50)  not null,
-    tckn      varchar(11),
-    birthdate date,
-    photo     text,
-    email     varchar(255) not null,
-    password  text         not null,
-    role      varchar(10)  not null,
-    verified  bool         not null
+    name        varchar(100) not null,
+    surname     varchar(50)  not null,
+    tckn        varchar(11),
+    birthdate   date,
+    create_date date         not null,
+    photo       text,
+    email       varchar(255) not null,
+    password    text         not null,
+    role        varchar(10)  not null,
+    verified    bool         not null
 );
 
 create

@@ -31,6 +31,7 @@ public class User extends BaseEntity {
     private String photo;
     private String tckn;
     private LocalDate birthdate;
+    private LocalDate createDate = LocalDate.now();
     private String password;
     private boolean verified;
     @Enumerated(EnumType.STRING)

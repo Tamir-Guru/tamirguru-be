@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class Merchant extends BaseEntity {
     private String website;
     private String details;
     private String photo;
+    private LocalDate createDate = LocalDate.now();
 
     @Type(type = "string-array")
     private String[] merchantTypes;

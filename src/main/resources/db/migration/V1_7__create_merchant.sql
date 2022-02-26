@@ -10,6 +10,7 @@ CREATE TABLE merchants
     address        text        not null,
     details        text        not null,
     photo          text,
+    create_date    date        not null,
     district_id    bigint      not null,
     longitude      decimal     not null,
     latitude       decimal     not null

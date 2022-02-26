@@ -16,7 +16,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -49,23 +48,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(
-                "/altair/**",
-                "/vendor/**",
-                "/assets/**",
-                "/voyager/**",
-                "/document",
-                "/",
-                "/error",
-                "/error.html"
-        );
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .authorizeRequests().antMatchers("/graphql", "/subscriptions").permitAll()
+                .authorizeRequests().antMatchers("/graphql",
+                        "/subscriptions",
+                        "/altair/**",
+                        "/vendor/**",
+                        "/assets/**",
+                        "/voyager/**",
+                        "/document",
+                        "/",
+                        "/error",
+                        "/error.html").permitAll()
                 .antMatchers(HttpMethod.GET, "/merchants").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated().and()

@@ -10,6 +10,7 @@ import com.hero.graphqldoc.annotations.Schema;
 import com.hero.graphqldoc.annotations.SchemaType;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,8 @@ public class MerchantResponse {
     private String phoneNumber;
     @SchemaType(example = "https://www.photo.com", description = "Photo url of the user", required = false)
     private String photo;
+    @SchemaType(example = "2022-10-10", description = "Merchant creation date", required = false)
+    private LocalDate createDate;
     @SchemaType(example = "I'm best merchant", description = "Merchant details", required = false)
     private String details;
     @SchemaType(example = "Example cad. Mah.", description = "Address of merchant", required = false)

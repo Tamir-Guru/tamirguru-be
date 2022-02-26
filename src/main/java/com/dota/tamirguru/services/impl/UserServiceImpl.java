@@ -181,6 +181,9 @@ public class UserServiceImpl implements UserService {
         }
         user.setEmail(userUpdateRequest.getEmail());
         user.setName(userUpdateRequest.getName());
+        user.setSurname(userUpdateRequest.getSurname());
+        user.setCreateDate(user.getCreateDate());
+        nviCheck(user);
         return userMapper.mapToModel(userRepository.save(user));
     }
 

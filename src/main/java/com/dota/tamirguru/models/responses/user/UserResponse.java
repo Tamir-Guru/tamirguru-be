@@ -10,6 +10,8 @@ import com.hero.graphqldoc.annotations.Schema;
 import com.hero.graphqldoc.annotations.SchemaType;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 @Schema(description = "Response of user details")
 public class UserResponse {
@@ -28,5 +30,7 @@ public class UserResponse {
     private String token;
     @SchemaType(example = "true", description = "Is the user active", required = false)
     private Boolean verified;
+    @SchemaType(example = "2022-10-10", description = "User creation date", required = false)
+    private LocalDate createDate;
 
 }

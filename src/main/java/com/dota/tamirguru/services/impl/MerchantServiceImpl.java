@@ -86,6 +86,7 @@ public class MerchantServiceImpl implements MerchantService {
         Merchant merchantLast = merchantMapper.mapRequestToEntity(request);
         merchantLast.setUserId(user.getId());
         merchantLast.setId(merchant.getId());
+        merchantLast.setCreateDate(merchant.getCreateDate());
         merchantRepository.save(merchantLast);
         merchantLast.setDistrict(locationRepository.getDistrictById(request.getDistrictId()));
         return merchantMapper.mapEntityToResponse(merchantLast);
