@@ -10,7 +10,11 @@ import com.dota.tamirguru.entitites.Merchant;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MerchantRepository extends PagingAndSortingRepository<Merchant, Long>, MerchantRepositoryCustom {
+
+    Optional<Merchant> findByIdAndUserId(Long id, Long userId);
 
 }

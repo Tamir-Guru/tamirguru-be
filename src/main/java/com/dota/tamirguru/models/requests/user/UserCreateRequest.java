@@ -32,8 +32,7 @@ public class UserCreateRequest {
     private String surname;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @NotNull
-    @SchemaType(example = "1994-03-16", description = "Birthday of user")
+    @SchemaType(example = "1994-03-16", description = "Birthday of user", required = false)
     private LocalDate birthdate;
 
     @NotBlank

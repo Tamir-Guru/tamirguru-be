@@ -12,7 +12,7 @@ type User {
 }
 
 input UserCreate {
-    birthdate: Date!
+    birthdate: Date
     email: String!
     name: String!
     password: String!

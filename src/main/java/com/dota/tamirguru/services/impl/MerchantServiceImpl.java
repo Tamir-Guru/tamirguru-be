@@ -6,6 +6,7 @@
  */
 package com.dota.tamirguru.services.impl;
 
+import com.dota.tamirguru.constants.GeneralMessageConstants;
 import com.dota.tamirguru.core.exception.GuruException;
 import com.dota.tamirguru.core.security.jwt.JWTService;
 import com.dota.tamirguru.entitites.Merchant;
@@ -14,12 +15,14 @@ import com.dota.tamirguru.entitites.User;
 import com.dota.tamirguru.mappers.MerchantMapper;
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
 import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
+import com.dota.tamirguru.models.requests.merchant.MerchantUpdateRequest;
 import com.dota.tamirguru.models.responses.merchant.MerchantFeatureResponse;
 import com.dota.tamirguru.models.responses.merchant.MerchantResponse;
 import com.dota.tamirguru.repositories.LocationRepository;
 import com.dota.tamirguru.repositories.MerchantFeatureRepository;
 import com.dota.tamirguru.repositories.MerchantRepository;
 import com.dota.tamirguru.repositories.MerchantTypeRepository;
+import com.dota.tamirguru.services.CloudService;
 import com.dota.tamirguru.services.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -52,6 +55,9 @@ public class MerchantServiceImpl implements MerchantService {
     private LocationRepository locationRepository;
 
     @Autowired
+    private CloudService cloudService;
+
+    @Autowired
     private MerchantMapper merchantMapper;
 
     @Override
@@ -73,6 +79,30 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     @Transactional
+    public MerchantResponse updateMerchant(MerchantUpdateRequest request) {
+        User user = jwtService.getLoggedUser();
+        Merchant merchant = merchantRepository.findByIdAndUserId(request.getId(), user.getId()).orElseThrow(() ->
+                new GuruException(HttpStatus.BAD_REQUEST, GeneralMessageConstants.MERCHANT_NOT_FOUND, GeneralMessageConstants.MRC_NOT_FOUND));
+        Merchant merchantLast = merchantMapper.mapRequestToEntity(request);
+        merchantLast.setUserId(user.getId());
+        merchantLast.setId(merchant.getId());
+        merchantRepository.save(merchantLast);
+        merchantLast.setDistrict(locationRepository.getDistrictById(request.getDistrictId()));
+        return merchantMapper.mapEntityToResponse(merchantLast);
+    }
+
+    @Override
+    public MerchantResponse updateMerchantPhoto(byte[] photo, Long merchantId) {
+        User user = jwtService.getLoggedUser();
+        Merchant merchant = merchantRepository.findByIdAndUserId(merchantId, user.getId()).orElseThrow(() ->
+                new GuruException(HttpStatus.BAD_REQUEST, GeneralMessageConstants.MERCHANT_NOT_FOUND, GeneralMessageConstants.MRC_NOT_FOUND));
+        merchant.setPhoto(cloudService.uploadMerchantPhoto(photo, merchantId));
+        merchantRepository.save(merchant);
+        return merchantMapper.mapEntityToResponse(merchant);
+    }
+
+    @Override
+    @Transactional
     public List<MerchantResponse> getMerchantByDistrict(MerchantFilter filter, Pageable pageable) {
         List<Merchant> merchants = merchantRepository.filter(filter, pageable);
         List<MerchantResponse> responses = new ArrayList<>();
@@ -87,7 +117,7 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public MerchantResponse findById(Long id) {
         return merchantMapper.mapEntityToResponse(merchantRepository.findById(id).orElseThrow(
-                () -> new GuruException(HttpStatus.BAD_REQUEST, "Merchant not found", "MRC_NOT_FOUND")
+                () -> new GuruException(HttpStatus.BAD_REQUEST, GeneralMessageConstants.MERCHANT_NOT_FOUND, GeneralMessageConstants.MRC_NOT_FOUND)
         ));
     }
 

@@ -20,3 +20,17 @@ input MerchantCreateRequest {
     phoneNumber: String!
     details: String!
 }
+
+input MerchantUpdateRequest {
+    districtId: ID!
+    id: ID!
+    fullAddress: String!
+    email: String
+    website: String
+    latitude: Float!
+    longitude: Float!
+    merchantFeatures: [MerchantFeatureRequest]!
+    merchantName: String!
+    phoneNumber: String!
+    details: String!
+}

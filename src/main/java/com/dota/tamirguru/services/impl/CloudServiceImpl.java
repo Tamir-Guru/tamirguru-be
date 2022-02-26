@@ -37,6 +37,10 @@ public class CloudServiceImpl implements CloudService {
     @Value("${cloudinary.blank_url}")
     private String blankUrl;
 
+    @Value("${cloudinary.blank_marchant_url}")
+    private String blankMerchantUrl;
+
+
     private Cloudinary cloudinary = null;
 
     @PostConstruct
@@ -53,6 +57,18 @@ public class CloudServiceImpl implements CloudService {
         Map<String, Object> cloudinaryMap = new HashMap<>();
         cloudinaryMap.put(FOLDER, "tamirguru/profile");
         cloudinaryMap.put(PUBLIC_ID, userMail);
+        return getString(photoData, cloudinaryMap, blankUrl);
+    }
+
+    @Override
+    public String uploadMerchantPhoto(byte[] photoData, Long id) {
+        Map<String, Object> cloudinaryMap = new HashMap<>();
+        cloudinaryMap.put(FOLDER, "tamirguru/merhcant");
+        cloudinaryMap.put(PUBLIC_ID, id.toString());
+        return getString(photoData, cloudinaryMap, blankMerchantUrl);
+    }
+
+    private String getString(byte[] photoData, Map<String, Object> cloudinaryMap, String blankUrl) {
         cloudinaryMap.put(OVERWRITE, true);
         cloudinaryMap.put(USE_FILENAME, true);
         try {

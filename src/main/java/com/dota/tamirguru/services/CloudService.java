@@ -8,4 +8,6 @@ package com.dota.tamirguru.services;
 
 public interface CloudService {
     String uploadPhoto(byte[] photoData, String userMail);
+
+    String uploadMerchantPhoto(byte[] photoData, Long id);
 }

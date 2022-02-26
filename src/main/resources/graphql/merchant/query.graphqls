@@ -6,4 +6,6 @@ extend type Query {
 
 extend type Mutation {
     createMerchant(request: MerchantCreateRequest!): Merchant!
+    updateMerchant(request: MerchantUpdateRequest!): Merchant!
+    updateMerchantAvatar(avatar: Upload!, id: ID!): Merchant!
 }

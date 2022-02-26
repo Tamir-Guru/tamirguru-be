@@ -27,6 +27,8 @@ public class MerchantResponse {
     private String email;
     @SchemaType(example = "+905398760808", description = "Phone number of merchant", required = false)
     private String phoneNumber;
+    @SchemaType(example = "https://www.photo.com", description = "Photo url of the user", required = false)
+    private String photo;
     @SchemaType(example = "I'm best merchant", description = "Merchant details", required = false)
     private String details;
     @SchemaType(example = "Example cad. Mah.", description = "Address of merchant", required = false)

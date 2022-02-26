@@ -9,6 +9,7 @@ CREATE TABLE merchants
     merchant_types text[]      not null,
     address        text        not null,
     details        text        not null,
+    photo          text,
     district_id    bigint      not null,
     longitude      decimal     not null,
     latitude       decimal     not null
