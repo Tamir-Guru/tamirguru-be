@@ -12,6 +12,7 @@ import com.dota.tamirguru.entitites.MerchantType;
 import com.dota.tamirguru.models.internals.merchant.MerchantTypeName;
 import com.dota.tamirguru.repositories.MerchantTypeRepository;
 import com.dota.tamirguru.services.CategoryService;
+import com.dota.tamirguru.services.MerchantFeatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -26,13 +27,17 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private MerchantTypeRepository merchantTypeRepository;
 
+    @Autowired
+    private MerchantFeatureService featureService;
+
     @Override
     @Cacheable(cacheNames = "parentCategories")
     public List<MerchantTypeName> getParentCategories(String language) {
         List<MerchantTypeName> merchantTypeNames = new ArrayList<>();
         Set<MerchantType> allTypes = merchantTypeRepository.findParentCategories();
         allTypes.forEach(item -> merchantTypeNames
-                .add(new MerchantTypeName(Translator.getMessage(LocationConstant.MERCHANT_PREFIX + item.getTypeId()), item.getTypeId(), item.getParentId(), item.getId())));
+                .add(new MerchantTypeName(Translator.getMessage(LocationConstant.MERCHANT_PREFIX + item.getTypeId()), item.getTypeId(), item.getParentId(), item.getId(),
+                        featureService.getFeaturesByCategory(item.getTypeId(), language))));
         return merchantTypeNames;
     }
 
@@ -42,7 +47,8 @@ public class CategoryServiceImpl implements CategoryService {
         List<MerchantTypeName> merchantTypeNames = new ArrayList<>();
         Set<MerchantType> allTypes = merchantTypeRepository.findChildCategories(parentId);
         allTypes.forEach(item -> merchantTypeNames
-                .add(new MerchantTypeName(Translator.getMessage(LocationConstant.MERCHANT_PREFIX + item.getTypeId()), item.getTypeId(), item.getParentId(), item.getId())));
+                .add(new MerchantTypeName(Translator.getMessage(LocationConstant.MERCHANT_PREFIX + item.getTypeId()), item.getTypeId(), item.getParentId(), item.getId(),
+                        featureService.getFeaturesByCategory(item.getTypeId(), language))));
         return merchantTypeNames;
     }
 
@@ -52,7 +58,8 @@ public class CategoryServiceImpl implements CategoryService {
         List<MerchantTypeName> merchantTypeNames = new ArrayList<>();
         Set<MerchantType> allTypes = merchantTypeRepository.findTypes();
         allTypes.forEach(item -> merchantTypeNames
-                .add(new MerchantTypeName(Translator.getMessage(LocationConstant.MERCHANT_PREFIX + item.getTypeId()), item.getTypeId(), item.getParentId(), item.getId())));
+                .add(new MerchantTypeName(Translator.getMessage(LocationConstant.MERCHANT_PREFIX + item.getTypeId()), item.getTypeId(), item.getParentId(), item.getId(),
+                        featureService.getFeaturesByCategory(item.getTypeId(), language))));
         return merchantTypeNames;
     }
 

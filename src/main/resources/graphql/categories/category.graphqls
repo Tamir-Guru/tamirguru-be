@@ -3,4 +3,5 @@ type MerchantTypeName {
     typeId: String!
     parentId: ID
     id: ID!
+    features: [FeatureResponse]!
 }

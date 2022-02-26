@@ -6,10 +6,13 @@
  */
 package com.dota.tamirguru.models.internals.merchant;
 
+import com.dota.tamirguru.models.responses.features.FeatureResponse;
 import com.hero.graphqldoc.annotations.Schema;
 import com.hero.graphqldoc.annotations.SchemaType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -24,6 +27,8 @@ public class MerchantTypeName {
     private Long parentId;
     @SchemaType(example = "3", description = "Category ID")
     private Long id;
+    @SchemaType(description = "Category Features")
+    private List<FeatureResponse> features;
 
 }
 
