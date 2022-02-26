@@ -35,6 +35,7 @@ public class Merchant extends BaseEntity {
     private String phoneNumber;
     private String email;
     private String website;
+    private String details;
 
     @Type(type = "string-array")
     private String[] merchantTypes;

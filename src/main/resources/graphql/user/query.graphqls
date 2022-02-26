@@ -1,3 +1,4 @@
+
 extend type Query {
     userDetails: User!
     login(request: Auth!): User!
@@ -10,4 +11,5 @@ extend type Mutation {
     resetPassword(request: ResetPassword!): Boolean!
     resendVerification(request: ResendVerificationMail!): Boolean!
     updateUser(request: UserUpdate!): User!
+    updateAvatar(avatar: Upload!): User!
 }

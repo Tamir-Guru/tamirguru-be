@@ -19,6 +19,7 @@ import com.dota.tamirguru.services.UserService;
 import com.hero.graphqldoc.annotations.GraphQLDocDetail;
 import com.hero.graphqldoc.annotations.MutationType;
 import graphql.kickstart.tools.GraphQLMutationResolver;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
+import javax.servlet.http.Part;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Component
 @Validated
@@ -48,6 +51,12 @@ public class UserMutationResolver implements GraphQLMutationResolver {
     @GraphQLDocDetail(operation = "Update User", description = "This endpoint updates user and returns details")
     public UserResponse updateUser(@Valid UserUpdateRequest request) {
         return userService.updateUser(request);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GraphQLDocDetail(operation = "Update User Avatar", description = "This endpoint updates avatar and returns user details")
+    public UserResponse updateAvatar(Part avatar) throws IOException {
+        return userService.uploadUserPhoto(IOUtils.toByteArray(avatar.getInputStream()));
     }
 
     @PreAuthorize("isAuthenticated()")

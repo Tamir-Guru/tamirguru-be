@@ -18,6 +18,8 @@ public class UserResponse {
     private String email;
     @SchemaType(example = "Name", description = "Name of the user", required = false)
     private String name;
+    @SchemaType(example = "https://www.photo.com", description = "Photo url of the user", required = false)
+    private String photo;
     @SchemaType(example = "Surname", description = "Surname of the user", required = false)
     private String surname;
     @SchemaType(example = "MERCHANT", description = "Role of the user", required = false)

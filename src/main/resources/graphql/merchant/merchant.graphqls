@@ -3,6 +3,7 @@ scalar Long
 type Merchant {
     merchantName: String
     email: String
+    details: String
     id: ID
     phoneNumber: String
     fullAddress: String

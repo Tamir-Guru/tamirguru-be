@@ -8,6 +8,7 @@ CREATE TABLE merchants
     phone_number   varchar(11) not null,
     merchant_types text[]      not null,
     address        text        not null,
+    details        text        not null,
     district_id    bigint      not null,
     longitude      decimal     not null,
     latitude       decimal     not null

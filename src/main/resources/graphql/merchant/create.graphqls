@@ -18,4 +18,5 @@ input MerchantCreateRequest {
     merchantFeatures: [MerchantFeatureRequest]!
     merchantName: String!
     phoneNumber: String!
+    details: String!
 }

@@ -35,6 +35,10 @@ public class MerchantCreateRequest {
     @SchemaType(example = "example@merchant.com", description = "Email of merchant")
     private String email;
 
+    @NotBlank
+    @SchemaType(example = "I'm best merchant", description = "Merchant detail description")
+    private String details;
+
     @SchemaType(example = "http://www.example.com", description = "Website of merchant", required = false)
     private String website;
 

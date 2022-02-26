@@ -7,6 +7,7 @@ create table users
     surname   varchar(50)  not null,
     tckn      varchar(11),
     birthdate date,
+    photo     text,
     email     varchar(255) not null,
     password  text         not null,
     role      varchar(10)  not null,

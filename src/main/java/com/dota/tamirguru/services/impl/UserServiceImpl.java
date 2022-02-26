@@ -30,6 +30,7 @@ import com.dota.tamirguru.models.requests.user.UserUpdateRequest;
 import com.dota.tamirguru.models.requests.user.ValidationRequest;
 import com.dota.tamirguru.models.responses.user.UserResponse;
 import com.dota.tamirguru.repositories.UserRepository;
+import com.dota.tamirguru.services.CloudService;
 import com.dota.tamirguru.services.MailService;
 import com.dota.tamirguru.services.UserService;
 import com.dota.tamirguru.services.ValidationService;
@@ -65,6 +66,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordUtil passwordUtil;
+
+    @Autowired
+    private CloudService cloudService;
 
 
     /**
@@ -250,6 +254,20 @@ public class UserServiceImpl implements UserService {
             mailService.sendPasswordResetMail(new GenericMailRequest(Collections.singleton(request.getEmail()), user.getName(),
                     validation.getCode(), Translator.getLanguage()));
         }
+    }
+
+    /**
+     * Upload avatar4
+     *
+     * @param photo photo data
+     * @throws GuruException if user not exist
+     **/
+    @Override
+    public UserResponse uploadUserPhoto(byte[] photo) {
+        User user = jwtService.getLoggedUser();
+        user.setPhoto(cloudService.uploadPhoto(photo, user.getEmail()));
+        userRepository.save(user);
+        return userMapper.mapToModel(user);
     }
 
     /**

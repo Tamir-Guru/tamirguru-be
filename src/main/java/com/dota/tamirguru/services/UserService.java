@@ -40,4 +40,5 @@ public interface UserService {
 
     UserResponse updateUser(UserUpdateRequest userUpdateRequest);
 
+    UserResponse uploadUserPhoto(byte[] photo);
 }
