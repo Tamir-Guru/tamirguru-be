@@ -3,3 +3,6 @@ ALTER TABLE merchants
 
 ALTER TABLE merchants
     ADD COLUMN website VARCHAR(255);
+
+ALTER TABLE merchants
+    ADD COLUMN approved boolean not null default false;

@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,6 +74,7 @@ public class MerchantServiceImpl implements MerchantService {
         User user = jwtService.getLoggedUser();
         Merchant merchant = merchantMapper.mapRequestToEntity(request);
         merchant.setUserId(user.getId());
+        setCategories(merchant);
         merchantRepository.save(merchant);
         merchant.setDistrict(locationRepository.getDistrictById(request.getDistrictId()));
         return merchantMapper.mapEntityToResponse(merchant);
@@ -84,6 +87,7 @@ public class MerchantServiceImpl implements MerchantService {
         Merchant merchant = merchantRepository.findByIdAndUserId(request.getId(), user.getId()).orElseThrow(() ->
                 new GuruException(HttpStatus.BAD_REQUEST, GeneralMessageConstants.MERCHANT_NOT_FOUND, GeneralMessageConstants.MRC_NOT_FOUND));
         Merchant merchantLast = merchantMapper.mapRequestToEntity(request);
+        setCategories(merchant);
         merchantLast.setUserId(user.getId());
         merchantLast.setId(merchant.getId());
         merchantLast.setCreateDate(merchant.getCreateDate());
@@ -125,6 +129,25 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public Set<MerchantFeatureResponse> findFeaturesById(Long id) {
         return merchantMapper.featureMap(merchantFeatureRepository.findByMerchantId(id));
+    }
+
+    private void setCategories(Merchant merchant) {
+        Set<MerchantType> types = merchantTypeRepository.findTypes();
+        Set<String> categories = new HashSet<>();
+        for (String merchantType : merchant.getMerchantTypes()) {
+            MerchantType type = types.stream().filter(item -> item.getTypeId().equals(merchantType)).toList().get(0);
+            categories.add(merchantType);
+            getParent(type, categories, types);
+        }
+        merchant.setMerchantTypes(Arrays.copyOf(categories.toArray(), categories.size(), String[].class));
+    }
+
+    private void getParent(MerchantType type, Set<String> categories, Set<MerchantType> types) {
+        if (type.getParentId() != null) {
+            MerchantType typeLast = types.stream().filter(iteam -> iteam.getId().equals(type.getParentId())).toList().get(0);
+            categories.add(typeLast.getTypeId());
+            getParent(typeLast, categories, types);
+        }
     }
 
 }

@@ -55,5 +55,6 @@ public class Merchant extends BaseEntity {
     private String address;
     private Double longitude;
     private Double latitude;
+    private boolean approved = Boolean.FALSE;
 
 }

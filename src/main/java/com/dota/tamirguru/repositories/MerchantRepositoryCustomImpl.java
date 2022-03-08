@@ -117,8 +117,9 @@ public class MerchantRepositoryCustomImpl implements MerchantRepositoryCustom {
     }
 
     private void createQuery(StringBuilder str, List<String> conditions) {
+        str.append("where mrc.approved = true ");
         if (!conditions.isEmpty()) {
-            str.append("where ");
+            str.append(" and ");
             for (int i = 0; i < conditions.size(); i++) {
                 str.append(conditions.get(i));
                 if (i < conditions.size() - 1) {

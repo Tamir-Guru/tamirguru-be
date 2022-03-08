@@ -28,7 +28,7 @@ public class MerchantCreateRequest {
 
     @NotBlank
     @Length(min = 9, max = 11)
-    @SchemaType(example = "+905398760808", description = "Phone number of merchant")
+    @SchemaType(example = "5555555555", description = "Phone number of merchant")
     private String phoneNumber;
 
     @Email
