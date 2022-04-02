@@ -13,10 +13,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
+@SuppressWarnings("java:S100")
 public interface CommentRepository extends PagingAndSortingRepository<Comment, Long> {
 
-    List<Comment> findAllByMerchantIdAndApprovedIsTrue(Long merchantId, Pageable pageable);
+    List<Comment> findAllByMerchant_IdAndApprovedIsTrue(Long merchantId, Pageable pageable);
 
-    List<Comment> findAllByUserIdAndApprovedTrue(Long userId, Pageable pageable);
+    List<Comment> findAllByUser_IdAndApprovedIsTrue(Long userId, Pageable pageable);
 
 }

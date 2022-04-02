@@ -1,5 +1,4 @@
 scalar Upload
-scalar Date
 
 type User {
     email: String

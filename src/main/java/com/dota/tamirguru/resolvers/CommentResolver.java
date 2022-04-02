@@ -15,6 +15,7 @@ import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -36,6 +37,22 @@ public class CommentResolver implements GraphQLQueryResolver {
                                                  @ParameterType(example = "date") String order,
                                                  @ParameterType(example = "1") @NotNull Long userId) {
         return commentService.getUserComments(userId, PageRequest.of(pageNumber - 1, pageSize, Sort.by(order).ascending()));
+    }
+
+    @GraphQLDocDetail(operation = "Search own comments of User", description = "This endpoint gets user comments ")
+    @PreAuthorize("isAuthenticated()")
+    public List<CommentResponse> getOwnComments(@ParameterType(example = "1") @Min(1) int pageNumber,
+                                                @ParameterType(example = "1") @Min(1) int pageSize,
+                                                @ParameterType(example = "date") String order) {
+        return commentService.getUserComments(PageRequest.of(pageNumber - 1, pageSize, Sort.by(order).ascending()));
+    }
+
+    @GraphQLDocDetail(operation = "Search comments of Merchant", description = "This endpoint gets merchant's comments ")
+    public List<CommentResponse> getMerchantComments(@ParameterType(example = "1") @Min(1) int pageNumber,
+                                                     @ParameterType(example = "1") @Min(1) int pageSize,
+                                                     @ParameterType(example = "date") String order,
+                                                     @ParameterType(example = "1") @NotNull Long merchantId) {
+        return commentService.getMerchantComments(merchantId, PageRequest.of(pageNumber - 1, pageSize, Sort.by(order).ascending()));
     }
 
 }

@@ -21,7 +21,7 @@ public class CreateCommentRequest {
     @SchemaType(example = "Example comment", description = "Comment for the merchant")
     private String comment;
     @NotNull
-    @SchemaType(example = "1L", description = "Merchant Id")
+    @SchemaType(example = "1", description = "Merchant Id")
     private Long merchantId;
 
 }

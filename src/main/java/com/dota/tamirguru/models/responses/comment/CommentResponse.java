@@ -12,7 +12,7 @@ import com.hero.graphqldoc.annotations.Schema;
 import com.hero.graphqldoc.annotations.SchemaType;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Schema(description = "Comment Detail Response")
@@ -20,8 +20,8 @@ public class CommentResponse {
 
     @SchemaType(example = "Example", description = "Comment text", required = false)
     private String comment;
-    @SchemaType(example = "2020-01-01T12:12:12", description = "Comment date", required = false)
-    private LocalDateTime date;
+    @SchemaType(example = "2020-01-01", description = "Comment date", required = false)
+    private LocalDate date;
     @SchemaType(description = "Commenter user id", required = false)
     private UserResponse user;
     @SchemaType(description = "Commented merchant", required = false)
