@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Set;
 
@@ -32,8 +33,8 @@ public class MerchantResolver implements GraphQLQueryResolver {
     private MerchantService merchantService;
 
     @GraphQLDocDetail(operation = "Search Merchant", description = "This endpoint gets merchant details by filter")
-    public List<MerchantResponse> getMerchants(MerchantFilter filter, @ParameterType(example = "1") int pageNumber,
-                                               @ParameterType(example = "1") int pageSize) {
+    public List<MerchantResponse> getMerchants(MerchantFilter filter, @ParameterType(example = "1") @Min(1) int pageNumber,
+                                               @ParameterType(example = "1") @Min(1) int pageSize) {
         return merchantService.getMerchantByDistrict(filter, PageRequest.of(pageNumber - 1, pageSize, Sort.by("name").ascending()));
     }
 

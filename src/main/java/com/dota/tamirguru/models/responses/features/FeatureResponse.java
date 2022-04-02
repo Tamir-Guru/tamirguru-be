@@ -20,7 +20,7 @@ public class FeatureResponse {
     private String name;
     @SchemaType(example = "Araba Markası", description = "Feature Description", required = false)
     private String description;
-    @SchemaType(example = "example", description = "Brand Details", required = false)
+    @SchemaType(description = "Brand Details", required = false)
     private List<BrandDetails> brandDetails;
 
 }

@@ -34,7 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -149,5 +151,33 @@ public class MerchantServiceImpl implements MerchantService {
             getParent(typeLast, categories, types);
         }
     }
+
+
+    public static void main(String[] args) {
+        run();
+    }
+
+    private static void run() {
+        List<String> file1 = Arrays.asList("Bu bir ask hikayesi".toLowerCase(Locale.ENGLISH).split(" "));
+        List<String> file2 = Arrays.asList("Siyah beyaz bir ask hikayesi".toLowerCase(Locale.ENGLISH).split(" "));
+        List<String> file3 = Arrays.asList("Ask olmadan bir hayat devam edemez kardoooo".toLowerCase(Locale.ENGLISH).split(" "));
+
+        System.out.println(getCommonWords(file1, file2, file3));
+    }
+
+    private static Set<String> getCommonWords(List<String>... files) {
+        Set<String> result = new HashSet<>();
+        // possible optimization sort files by ascending size
+        Iterator<List<String>> it = Arrays.asList(files).iterator();
+        if (it.hasNext()) {
+            result.addAll(it.next());
+        }
+        while (it.hasNext()) {
+            Set<String> words = new HashSet<>(it.next());
+            result.retainAll(words);
+        }
+        return result;
+    }
+
 
 }

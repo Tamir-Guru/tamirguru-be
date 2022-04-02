@@ -1,0 +1,8 @@
+type Comment {
+    comment: String
+    date: DateTime
+    user: User
+    merchant: Merchant
+    positive: Long
+    negative: Long
+}

@@ -35,6 +35,7 @@ import com.dota.tamirguru.services.MailService;
 import com.dota.tamirguru.services.UserService;
 import com.dota.tamirguru.services.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CloudService cloudService;
 
+    @Value("${spring.profiles.active:}")
+    private String activeProfiles;
 
     /**
      * This method creates new individual user
@@ -287,7 +290,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void nviCheck(User user) {
-        if (RoleEnum.COMMERCIAL.equals(user.getRole())) {
+        if (RoleEnum.COMMERCIAL.equals(user.getRole()) && "test".equals(activeProfiles)) {
             KPSPublic soap = new KPSPublic();
             boolean bool = soap.getKPSPublicSoap().tcKimlikNoDogrula(Long.parseLong(user.getTckn()), user.getName(),
                     user.getSurname(), user.getBirthdate().getYear());

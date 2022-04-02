@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -30,6 +31,7 @@ import java.util.List;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @TypeDef(name = "string-array", typeClass = StringArrayType.class)
+@Where(clause = "approved='true'")
 public class Merchant extends BaseEntity {
 
     private String name;

@@ -1,0 +1,3 @@
+extend type Query {
+    userComments(pageNumber: Int = 1, pageSize: Int = 5, order: String = "date", userId : ID!): [Comment]!
+}
