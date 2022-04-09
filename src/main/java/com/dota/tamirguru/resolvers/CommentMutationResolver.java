@@ -10,6 +10,7 @@ import com.dota.tamirguru.models.requests.comment.CreateCommentRequest;
 import com.dota.tamirguru.services.CommentService;
 import com.hero.graphqldoc.annotations.GraphQLDocDetail;
 import com.hero.graphqldoc.annotations.MutationType;
+import com.hero.graphqldoc.annotations.ParameterType;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,20 @@ public class CommentMutationResolver implements GraphQLMutationResolver {
     @PreAuthorize("isAuthenticated()")
     public Boolean createComment(CreateCommentRequest request) {
         commentService.addComment(request);
+        return true;
+    }
+
+    @GraphQLDocDetail(operation = "Add comments vote", description = "This endpoint adds new vote for comennt")
+    @PreAuthorize("isAuthenticated()")
+    public Boolean addVote(@ParameterType(example = "1") Long commentId, @ParameterType(example = "true") Boolean isPositive) {
+        commentService.addVote(commentId, isPositive);
+        return true;
+    }
+
+    @GraphQLDocDetail(operation = "Delete comments vote", description = "This endpoint deletes votes already added")
+    @PreAuthorize("isAuthenticated()")
+    public Boolean deleteVote(@ParameterType(example = "1") Long commentId) {
+        commentService.deleteVote(commentId);
         return true;
     }
 

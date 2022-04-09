@@ -9,6 +9,7 @@ package com.dota.tamirguru.entitites;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,8 +37,11 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "merchant_id")
     private Merchant merchant;
 
+    @Formula("(select count(p.*) from votes p where p.comment_id = id and p.is_positive = true)")
     private Long positive = 0L;
+    @Formula("(select count(p.*) from votes p where p.comment_id = id and p.is_positive = false)")
     private Long negative = 0L;
+
     private Short stars = 1;
     private boolean approved = Boolean.FALSE;
 

@@ -21,4 +21,8 @@ public interface CommentService {
     List<CommentResponse> getUserComments(Pageable pageable);
 
     List<CommentResponse> getMerchantComments(Long merchantId, Pageable pageable);
+
+    void addVote(Long commentId, Boolean positive);
+
+    void deleteVote(Long commentId);
 }

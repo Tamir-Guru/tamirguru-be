@@ -8,10 +8,12 @@ package com.dota.tamirguru.services.impl;
 
 import com.dota.tamirguru.core.security.jwt.JWTService;
 import com.dota.tamirguru.entitites.Comment;
+import com.dota.tamirguru.entitites.Vote;
 import com.dota.tamirguru.mappers.CommentMapper;
 import com.dota.tamirguru.models.requests.comment.CreateCommentRequest;
 import com.dota.tamirguru.models.responses.comment.CommentResponse;
 import com.dota.tamirguru.repositories.CommentRepository;
+import com.dota.tamirguru.repositories.VoteRepository;
 import com.dota.tamirguru.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
 
     @Autowired
     private CommentMapper commentMapper;
@@ -51,6 +56,20 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentResponse> getMerchantComments(Long merchantId, Pageable pageable) {
         return commentMapper.mapCommentList(commentRepository.findAllByMerchant_IdAndApprovedIsTrue(merchantId, pageable));
+    }
+
+    @Override
+    public void addVote(Long commentId, Boolean positive) {
+        Vote vote = new Vote();
+        vote.setCommentId(commentId);
+        vote.setUserId(jwtService.getLoggedUser().getId());
+        vote.setPositive(positive);
+        voteRepository.save(vote);
+    }
+
+    @Override
+    public void deleteVote(Long commentId) {
+        voteRepository.deleteByUserIdAndCommentId(jwtService.getLoggedUser().getId(), commentId);
     }
 
 }

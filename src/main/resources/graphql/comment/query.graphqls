@@ -6,4 +6,6 @@ extend type Query {
 
 extend type Mutation {
     createComment(request: NewComment!): Boolean!
+    addVote(commentId: ID!, isPositive: Boolean!): Boolean!
+    deleteVote(commentId: ID!): Boolean!
 }

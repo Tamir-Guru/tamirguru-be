@@ -7,8 +7,6 @@ create table comments
     user_id     bigint    not null,
     merchant_id bigint    not null,
     date        date      not null,
-    positive    bigint    not null default 0,
-    negative    bigint    not null default 0,
     stars       smallint  not null default 1,
     approved    boolean   not null default false
 );
