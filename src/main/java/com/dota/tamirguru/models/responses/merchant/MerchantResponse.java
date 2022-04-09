@@ -50,6 +50,8 @@ public class MerchantResponse {
     private Double longitude;
     @SchemaType(example = "12", description = "Map coordinate", required = false)
     private Double latitude;
+    @SchemaType(example = "3", description = "Average comment stars", required = false)
+    private Double averageStars;
     @SchemaType(example = "OELK", description = "Merchant Types", required = false)
     private Set<String> merchantTypes;
     @SchemaType(description = "Merchant features", required = false)

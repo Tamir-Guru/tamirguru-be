@@ -9,6 +9,7 @@ create table comments
     date        date      not null,
     positive    bigint    not null default 0,
     negative    bigint    not null default 0,
+    stars       smallint  not null default 1,
     approved    boolean   not null default false
 );
 
@@ -23,4 +24,10 @@ create unique index comments_user_merchant_id_uindex
 
 create index comments_date_index
     on comments (date DESC);
+
+create index comments_stars_index
+    on comments (stars);
+
+create index comments_stars_merchant_id_index
+    on comments (stars, merchant_id);
 

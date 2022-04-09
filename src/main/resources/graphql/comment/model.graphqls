@@ -10,4 +10,5 @@ type Comment {
 input NewComment {
     comment: String!
     merchantId: ID!
+    stars: Short!
 }

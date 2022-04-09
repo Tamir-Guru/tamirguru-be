@@ -38,6 +38,7 @@ public class Comment extends BaseEntity {
 
     private Long positive = 0L;
     private Long negative = 0L;
+    private Short stars = 1;
     private boolean approved = Boolean.FALSE;
 
 }

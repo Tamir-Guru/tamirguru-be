@@ -15,6 +15,7 @@ type Merchant {
     districtName: String
     longitude: Float
     latitude: Float
+    averageStars: Float
     merchantTypes: [String]
     features: [MerchantFeature]
 }

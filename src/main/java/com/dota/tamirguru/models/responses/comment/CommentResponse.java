@@ -30,5 +30,7 @@ public class CommentResponse {
     private Long positive;
     @SchemaType(description = "Negative feedbacks", required = false)
     private Long negative;
+    @SchemaType(description = "Star of comment", required = false)
+    private Long stars;
 
 }
