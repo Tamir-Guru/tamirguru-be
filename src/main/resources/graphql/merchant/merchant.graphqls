@@ -16,6 +16,7 @@ type Merchant {
     longitude: Float
     latitude: Float
     averageStars: Float
+    totalComments: Int
     merchantTypes: [String]
     features: [MerchantFeature]
 }

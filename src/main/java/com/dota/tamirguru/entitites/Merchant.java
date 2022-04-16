@@ -10,7 +10,6 @@ import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.Where;
@@ -59,8 +58,5 @@ public class Merchant extends BaseEntity {
     private Double longitude;
     private Double latitude;
     private boolean approved = Boolean.FALSE;
-
-    @Formula("(select avg(c.stars) from comments c where c.merchant_id = id)")
-    private double averageStars;
 
 }

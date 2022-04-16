@@ -52,6 +52,8 @@ public class MerchantResponse {
     private Double latitude;
     @SchemaType(example = "3", description = "Average comment stars", required = false)
     private Double averageStars;
+    @SchemaType(example = "3", description = "Average comment stars", required = false)
+    private Integer totalComments;
     @SchemaType(example = "OELK", description = "Merchant Types", required = false)
     private Set<String> merchantTypes;
     @SchemaType(description = "Merchant features", required = false)

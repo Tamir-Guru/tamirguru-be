@@ -11,6 +11,7 @@ import com.dota.tamirguru.core.exception.GuruException;
 import com.dota.tamirguru.core.security.jwt.JWTService;
 import com.dota.tamirguru.entitites.Merchant;
 import com.dota.tamirguru.entitites.MerchantType;
+import com.dota.tamirguru.entitites.Static;
 import com.dota.tamirguru.entitites.User;
 import com.dota.tamirguru.mappers.MerchantMapper;
 import com.dota.tamirguru.models.requests.merchant.MerchantCreateRequest;
@@ -18,6 +19,7 @@ import com.dota.tamirguru.models.requests.merchant.MerchantFilter;
 import com.dota.tamirguru.models.requests.merchant.MerchantUpdateRequest;
 import com.dota.tamirguru.models.responses.merchant.MerchantFeatureResponse;
 import com.dota.tamirguru.models.responses.merchant.MerchantResponse;
+import com.dota.tamirguru.repositories.CommentRepository;
 import com.dota.tamirguru.repositories.LocationRepository;
 import com.dota.tamirguru.repositories.MerchantFeatureRepository;
 import com.dota.tamirguru.repositories.MerchantRepository;
@@ -61,6 +63,9 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Autowired
     private MerchantMapper merchantMapper;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     @Cacheable(cacheNames = "merchantTypeMap")
@@ -114,6 +119,9 @@ public class MerchantServiceImpl implements MerchantService {
         for (Merchant merchant : merchants) {
             MerchantResponse response = merchantMapper.mapEntityToResponse(merchant);
             response.setFeatures(merchantMapper.featureMap(merchant.getFeatures()));
+            Static comments = commentRepository.getStatistic(merchant.getId());
+            response.setAverageStars(comments.getAvg());
+            response.setTotalComments(comments.getTotal());
             responses.add(response);
         }
         return responses;
